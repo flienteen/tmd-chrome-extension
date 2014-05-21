@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extName__",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "__MSG_extDescription__",
 	"icons":
 	{
@@ -10,78 +10,15 @@
 	},
 	"default_locale": "en",
 
-
-	// http://code.google.com/chrome/extensions/browserAction.html
-/*	"browser_action": {
-		"default_icon":  "icons/icon19.png", // optional
-		"default_title": "Action Title",     // optional; shown in tooltip
-		"default_popup": "src/popup.html"    // optional
-	},*/
-
-	// http://code.google.com/chrome/extensions/pageAction.html
-	/*
-	 "page_action": {
-	 "default_icon":  "icons/icon19.png", // optional
-	 "default_title": "Action Title",     // optional; shown in tooltip
-	 "default_popup": "src/popup.html"    // optional
-	 },
-	 */
-
-
-	//============================================================================
-	// PERMISSIONS
-	//============================================================================
-
-	// http://code.google.com/chrome/extensions/manifest.html#permissions
 	"permissions": [
-		//"http://*.google.com/", // Refer to http://goo.gl/CPeqK http://goo.gl/U3Vev
-		//"bookmarks", // http://code.google.com/chrome/extensions/bookmarks.html
-		//"chrome://favicon/",
-		//"clipboardRead", // document.execCommand('paste').
-		//"clipboardWrite", // document.execCommand('copy' OR 'cut')
-		//"contextMenus", //http:///code.google.com/chrome/extensions/contextMenus.html
-		//"cookies", // http://code.google.com/chrome/extensions/cookies.html
-		//"experimental", // http://code.google.com/chrome/extensions/dev/experimental.html
-		//"fileBrowserHandler", // http://goo.gl/GqbrP
-		//"geolocation", // http://dev.w3.org/geo/api/spec-source.html
-		//"history", // http://code.google.com/chrome/extensions/history.html
-		//"idle", // http://code.google.com/chrome/extensions/idle.html
-		//"management", // http://code.google.com/chrome/extensions/management.html
-		//"notifications", // code.google.com/chrome/extensions/notifications.html
-		//"tabs", // http://code.google.com/chrome/extensions/tabs.html +windows.html
-		//"tts", // http://code.google.com/chrome/extensions/tts.html
-		//"ttsEngine", // http://code.google.com/chrome/extensions/ttsEngine.html
 		"unlimitedStorage",
 		"storage"
 	],
 
-	// http://developer.chrome.com/extensions/contentSecurityPolicy.html
-	//"content_security_policy": "script-src https://; object-src 'self'",
-
 	"web_accessible_resources": ["options.html", "icons/icon19.png"],
 
-	//============================================================================
-	// CHANGING CHROME'S CHROME
-	//============================================================================
-
-	// http://code.google.com/chrome/extensions/omnibox.html
-	// "omnibox": { "keyword" : "aaron" },
-	// "icons": { "16": "16-full-color.png" }
-
-	// http://code.google.com/chrome/extensions/options.html
 	"options_page": "options.html",
 
-	//============================================================================
-	// IMPLEMENTING THE INNARDS
-	//============================================================================
-
-	// http://code.google.com/chrome/extensions/background_pages.html */
-	// "background_page": "background.html",
-/*	"background": {
-		"scripts": ["src/js/background.js"]
-	},*/
-
-	// http://code.google.com/chrome/extensions/content_scripts.html
 	 "content_scripts": [
 		 {
 			 "matches": [
@@ -101,6 +38,5 @@
 	 ],
 
 
-	// The new mandatory manifest version
 	"manifest_version": 2
 }

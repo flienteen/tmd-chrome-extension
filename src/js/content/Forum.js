@@ -36,7 +36,13 @@ Forum.prototype.uncensored = function()
 			if (postID==='last')
 				postID = $table.prevAll(':eq(1)').attr('name');
 
-			$tdComment = $table.next().find('.comment').html(__('Show post'));
+			$tdComment = $table.next().find('.comment');
+
+			//ensuring that this is a censored post
+			if(!/Cenzurat||Зацензурено/.test($tdComment.text().trim()))
+				return;
+
+			$tdComment.html(__('Show post'));
 			$trComment = $trComment.add($tdComment.parent().attr({'postID':postID, 'userID':userID}).addClass('decenzureaza'));
 		}
 	});
