@@ -1,0 +1,59 @@
+
+.decenzureaza{ background:#C7D5ED; cursor:pointer; }
+.decenzureazat{ background:#DCE6F7; cursor:default; }
+
+
+/*
+*  Browse
+*/
+tr.expanded #detailsCategories span, tr.expanded #detailsCategories span:hover
+{
+	border: 0;
+	background: 0;
+	line-height: normal;
+	-webkit-box-shadow: initial;
+	white-space: normal;
+	margin: 0;
+	padding: 0;
+	border-radius: 0;
+}
+
+.tableTorrents tr.expanded a
+{
+	 font-weight: normal;
+}
+
+a.floatingIcon
+{
+	position: fixed;
+	left: 0;
+	bottom: 10px;
+	text-decoration: none;
+}
+a.floatingIcon span
+{
+	display: inline-block;
+	width: 0;
+	height: 19px;
+	font-size: 12px;
+	overflow: hidden;
+	transition: width 1s;
+}
+a.floatingIcon img
+{
+	opacity: .2;
+	transition: opacity 2s;
+}
+a.floatingIcon:hover
+{
+	text-decoration: none;
+}
+a.floatingIcon:hover span
+{
+	width: 230px;
+	overflow: hidden;
+}
+a.floatingIcon:hover img
+{
+	opacity: 1;
+}
