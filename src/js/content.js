@@ -8,6 +8,7 @@ console.debug('Loading ::', chrome.i18n.getMessage('extName'));
 var
 	config = store.namespace('config')
 	, _cache = store.namespace('_cache')
+	, tmd
 	, l = function()
 	{
 		console.debug.apply(console, arguments);
@@ -21,7 +22,7 @@ var
 
 
 //run all
-(new TMD()).run(function()
+(tmd = new TMD()).run(function()
 {
 	(new Forum()).run();
 	(new Browse()).run();

@@ -2,7 +2,7 @@
 
 function TMD()
 {
-
+	this.user = {};
 }
 
 TMD.prototype.run = function(cb)
@@ -11,7 +11,7 @@ TMD.prototype.run = function(cb)
 	this.fixSpoilers2();
 	//this.contextMenus();
 	this.floatingIcon();
-
+	this.getUser();
 };
 
 /**
@@ -147,4 +147,48 @@ TMD.prototype.fixSpoilers2 = function()
 	}
 
 	$(document.body).append('<script>/* inserted by '+__('extName')+' */('+fixSpoilers.toLocaleString()+')(jQuery);</script>');
+};
+
+/**
+ * put username and id in this.user || this.user.id=? this.user.name=?
+ */
+TMD.prototype.getUser = function(cb)
+{
+	var
+		$user = $('#user_box a[href="/userdetails.php"]')
+		, __cacheId = ''
+		, $this = this
+	;
+
+	if(!$user.length)
+	{
+		return;
+	}
+
+
+	this.user.name = $user.text();
+	__cacheId = 'u.'+this.user.name+'.id';
+	this.user.id = _cache(__cacheId);
+
+	if(!this.user.id)
+	{
+		var $c = $('<div></div>');
+		$c.load('/users.php?search='+this.user.name+'&class=-  .mCenter tr a[href^="userdetails.php?id="]', function()
+		{
+			$c.find('a').each(function()
+			{
+				if($this.user.id)
+					return;
+
+				if(this.innerText === $this.user.name)
+				{
+					$this.user.id = this.href.replace(/.+id=(\d+)/,'$1');
+					_cache(__cacheId, $this.user.id);
+					cb && cb();
+				}
+			});
+		});
+	} else{
+		cb && cb();
+	}
 };

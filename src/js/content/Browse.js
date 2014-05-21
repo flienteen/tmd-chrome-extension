@@ -48,7 +48,7 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 		var
 			$v = $(this),
 			d = $v.data();
-		console.log($v, d);
+
 		if(d.tr.next().is('.expanded'))
 		{
 			$v.val('+');
@@ -126,7 +126,7 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 			{
 				var
 					$last_a = $(this).find('a:last')
-					, a = '<a href="./userdetails.php">' + $('#user_box a[href="/userdetails.php"]').text() + '</a>'
+					, a = '<a href="./userdetails.php">' + tmd.user.name + '</a>'
 				;
 
 				if ($last_a.length == 0)
