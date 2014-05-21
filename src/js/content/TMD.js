@@ -3,6 +3,7 @@
 function TMD()
 {
 	this.user = {};
+	this.version = '0.0.4';
 }
 
 TMD.prototype.run = function(cb)
@@ -20,25 +21,27 @@ TMD.prototype.run = function(cb)
  */
 TMD.prototype.updateConfig = function updateConfig(cbs)
 {
-	var version = config('version');
+	var
+		$this = this
+		, version = config('version')
+	;
 
 	chrome.storage.local.get('ConfigSettings', function(conf)
 	{
 		//forcing to view option page
 		if(!conf.ConfigSettings)
 		{
-			return location.replace(chrome.extension.getURL('options.html'));
+			return location.assign(chrome.extension.getURL('options.html'));
 		}
 
 		conf = conf.ConfigSettings;
 		config('global', conf.settings);
 
-		if(version != conf.version)
+		if(version != $this.version)
 		{
-			config('version', conf.version);
+			config('version', $this.version);
 
-			//TODO: poate ceva mai putin trival in cazul dat ^_^
-			location.reload();
+			return location.assign(chrome.extension.getURL('options.html'));
 		}
 
 		[].concat(cbs).forEach(function(cb)

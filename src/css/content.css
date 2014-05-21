@@ -58,7 +58,7 @@ a.floatingIcon:hover img
 	opacity: 1;
 }
 
-.postLike, .postUnLike
+.postLike
 {
 	font-weight: bold;
 	font-size: 12px;
