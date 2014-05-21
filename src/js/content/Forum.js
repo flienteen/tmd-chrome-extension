@@ -39,7 +39,7 @@ Forum.prototype.uncensored = function()
 			$tdComment = $table.next().find('.comment');
 
 			//ensuring that this is a censored post
-			if(!/Cenzurat||Зацензурено/.test($tdComment.text().trim()))
+			if(!/(Cenzurat)|(Зацензурено)/.test($tdComment.text().trim()))
 				return;
 
 			$tdComment.html(__('Show post'));
