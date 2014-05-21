@@ -4,11 +4,13 @@ function Forum()
 {
 	this.conf = config('global').Forum;
 	this.onTopicPage = window.location.search.match(/^\?action=viewtopic/)!=null;
+	this.topicId = location.search.replace(/.+topicid=(\d+).+/,'$1');
 }
 
 Forum.prototype.run = function()
 {
 	this.uncensored();
+	this.likeOwnPosts();
 };
 
 Forum.prototype.uncensored = function()
@@ -19,7 +21,7 @@ Forum.prototype.uncensored = function()
 	var $trComment = $();
 
 
-	$('.forumPostName').each(function()
+	$$('.forumPostName').each(function()
 	{
 		var
 			$table = $(this)
@@ -95,3 +97,38 @@ Forum.prototype.uncensored = function()
 
 
 
+Forum.prototype.likeOwnPosts = function()
+{
+	if(!this.onTopicPage || !this.conf.Action.likeMyPosts)
+		return;
+
+	var $this = this;
+	//TODO more User friendly response
+	$$('.forumPostName').each(function()
+	{
+		var
+			$table = $(this)
+			, postID = $table.prev().attr('name')
+			, userId = $table.find('a[href^="userdetails.php"]').attr('href').replace(/.+id=(\d+)/,'$1')
+		;
+
+		if(userId.toString() === tmd.user.id.toString())
+		{
+			var
+				$spanLike = $('<a></a>', {'class':'lnk postLike', text:__('Like'), 'data-postid':postID})
+				, $spanUnLike = $('<a></a>', {'class':'lnk postLike', text:__('Unlike'), 'data-postid':postID})
+			;
+
+			$table.find('td[width="99%"]').append(' - [',$spanLike, ' - ',$spanUnLike, ']');
+		}
+	});
+
+
+	$$('.forumPostName').on('click', 'a.postLike', function()
+	{
+		var action = $(this).text() === __('Like') ? 'like' : 'unlike';
+
+		$.post('/forum.php', {ajax:1, postid:$(this).data('postid'), topicid:$this.topicId, action:action});
+		$(this).hide();
+	});
+};

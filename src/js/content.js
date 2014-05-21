@@ -17,6 +17,18 @@ var
 	{
 		return chrome.i18n.getMessage.apply(this, arguments) || Array.prototype.slice.call(arguments).join(',');
 	}
+
+	/**
+	 * Simple jQuery selector caching
+	 * @param select
+	 * @returns {jQuery}
+	 */
+	, $$ = function(select)
+	{
+		this._c = this._c || {};
+		return this._c[select] || (this._c[select] = $(select));
+	}
+
 ;
 
 

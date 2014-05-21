@@ -8,12 +8,20 @@ var manifest = {
 	[
 		{
 			"Forum": [{
-				"Action": [{
-					type: 'checkbox',
-					name: 'activateUncensoreButton',
-					label: $getMessage('View censored posts'),
-					initial: true
-				}]
+				"Action": [
+					{
+						type: 'checkbox',
+						name: 'activateUncensoreButton',
+						label: $getMessage('View censored posts'),
+						initial: true
+					}
+					,{
+						type: 'checkbox',
+						name: 'likeMyPosts',
+						label: $getMessage('Like on your own posts'),
+						initial: true
+					}
+				]
 			}]
 		}
 
