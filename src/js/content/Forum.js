@@ -74,7 +74,7 @@ Forum.prototype.uncensored = function()
 				return;
 			}
 
-
+			//todo: check if user has permission to access `userhistory_posts.php`
 			$tmp.load("userhistory_posts.php?action=viewposts&id="+userID+"&page="+(pageNb++)+"  .pageContainer table:eq(0) table:eq(0)", function (d)
 			{
 				$(this).find('a[href*="&page=p"]').each(function(i,v)
@@ -94,7 +94,7 @@ Forum.prototype.uncensored = function()
 
 Forum.prototype.likeOwnPosts = function()
 {
-	if(!this.onTopicPage || !this.conf.Action.likeMyPosts)
+	if(!this.onTopicPage || !this.conf.Action.likeMyPosts || !tmd.user.id)
 		return;
 
 	var $this = this;
