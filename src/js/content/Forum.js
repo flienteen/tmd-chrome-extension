@@ -25,24 +25,19 @@ Forum.prototype.uncensored = function()
 	{
 		var
 			$table = $(this)
+			, $tdComment = $table.next().find('.comment[align="center"]')
 		;
 
-		if($table.find('a').length==4)
+		//ensuring that this is a censored post
+		if($tdComment.length && /(Cenzurat)|(Зацензурено)/.test($tdComment.text().trim()))
 		{
 			var
 				userID = $table.find('a[href*="userdetails.php?id="]').attr('href').replace(/.*id=/, "")
 				, postID = $table.prev().attr('name')
-				, $tdComment
-				;
+			;
 
 			if (postID==='last')
 				postID = $table.prevAll(':eq(1)').attr('name');
-
-			$tdComment = $table.next().find('.comment');
-
-			//ensuring that this is a censored post
-			if(!/(Cenzurat)|(Зацензурено)/.test($tdComment.text().trim()))
-				return;
 
 			$tdComment.html(__('Show post'));
 			$trComment = $trComment.add($tdComment.parent().attr({'postID':postID, 'userID':userID}).addClass('decenzureaza'));
