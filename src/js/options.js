@@ -8,18 +8,31 @@ var manifest = {
 	[
 		{
 			"Forum": [{
-				"Action": [
-					{
-						type: 'checkbox',
-						name: 'activateUncensoreButton',
-						label: $getMessage('View censored posts'),
-						initial: true
-					}
-					,{
+				"Action": [{
 						type: 'checkbox',
 						name: 'likeMyPosts',
 						label: $getMessage('Like on your own posts'),
 						initial: true
+					}
+				]
+			}, {
+				"Censored Post": [
+					{
+						type: 'checkbox',
+						name: 'showUncensoreButton',
+						label: $getMessage('Show `uncensore` button'),
+						initial: true
+					}
+					,{
+						type: 'checkbox',
+						name: 'showUncensoreAllButton',
+						label: $getMessage('Show `uncensore all` button'),
+						initial: true
+					},{
+						type: 'checkbox',
+						name: 'autoResolveAllCensoredPost',
+						label: $getMessage('(may freeze your browser) Auto resolve all censored posts'),
+						initial: false
 					}
 				]
 			}]

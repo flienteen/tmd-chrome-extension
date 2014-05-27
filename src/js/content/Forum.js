@@ -15,10 +15,15 @@ Forum.prototype.run = function()
 
 Forum.prototype.uncensored = function()
 {
-	if(!this.onTopicPage || !this.conf.Action.activateUncensoreButton)
+	if(!this.onTopicPage || !(this.conf['Censored Post'].showUncensoreButton || this.conf['Censored Post'].showUncensoreAllButton || this.conf['Censored Post'].autoResolveAllCensoredPost))
 		return;
 
-	var $trComment = $();
+	var
+		$trComment = $()
+		, $showPosts = $()
+		, $showAllPosts = $()
+		, self = this
+	;
 
 
 	$$('.forumPostName').each(function()
@@ -33,25 +38,38 @@ Forum.prototype.uncensored = function()
 		{
 			var
 				userID = $table.find('a[href*="userdetails.php?id="]').attr('href').replace(/.*id=/, "")
-				, postID = $table.prev().attr('name')
+				, postID = $table.prev().attr('name')==='last' ? $table.prevAll(':eq(1)').attr('name') : $table.prev().attr('name')
+				, $showPost = $('<a></a>',{text:__('Show post'), 'postID':postID, 'userID':userID}).data('$tr', $tdComment.parent())
+				, $showAllPost = $('<a></a>',{text:__('Show all posts')})
+				, _append = []
 			;
 
-			if (postID==='last')
-				postID = $table.prevAll(':eq(1)').attr('name');
+			if(self.conf['Censored Post'].showUncensoreButton)
+			{
+				_append.push('[',$showPost,']');
+			}
 
-			$tdComment.html(__('Show post'));
-			$trComment = $trComment.add($tdComment.parent().attr({'postID':postID, 'userID':userID}).addClass('decenzureaza'));
+			if(self.conf['Censored Post'].showUncensoreAllButton)
+			{
+				var _p = _append.length ? ' &nbsp;&nbsp; - &nbsp;&nbsp; [' : '[';
+				_append.push(_p,$showAllPost,']');
+			}
+
+
+			$tdComment.empty().append.apply($tdComment, _append).parent().addClass('decenzureaza');
+			$showPosts = $showPosts.add($showPost);
+			$showAllPosts = $showAllPosts.add($showAllPost);
 		}
 	});
 
 
-	$trComment.one('click', function()
+	$showPosts.one('click', function()
 	{
 		var
-			$tr = $(this)
+			$tr = $(this).data('$tr')
 			, $td = $tr.find('.comment').html('<img src="/pic/loading2.gif" />')
-			, userID = $tr.attr('userID')
-			, postID = $tr.attr('postID')
+			, userID = $(this).attr('userID')
+			, postID = $(this).attr('postID')
 			, pageNb=0
 			, __cacheId = 'u.'+userID+'.posts'
 			, _cacheUserPosts = _cache(__cacheId) || {}
@@ -88,6 +106,24 @@ Forum.prototype.uncensored = function()
 
 	});
 
+
+	$showAllPosts.one('click', showAllPosts);
+
+
+	self.conf['Censored Post'].autoResolveAllCensoredPost && showAllPosts();
+
+
+	function showAllPosts()
+	{
+		$showPosts.each(function(i,v)
+		{
+			//async
+			setTimeout(function()
+			{
+				$(v).click();
+			}, 50);
+		});
+	}
 };
 
 

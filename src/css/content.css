@@ -1,6 +1,7 @@
 
-.decenzureaza{ background:#C7D5ED; cursor:pointer; }
-.decenzureazat{ background:#DCE6F7; cursor:default; }
+.decenzureaza{ background:#C7D5ED;  }
+.decenzureaza a{ cursor: pointer;  }
+.decenzureazat{ background: rgba(197, 208, 255, 0.17); }
 
 
 /*
