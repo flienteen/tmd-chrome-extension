@@ -28,11 +28,18 @@ var manifest = {
 						name: 'showUncensoreAllButton',
 						label: $getMessage('Show `uncensore all` button'),
 						initial: true
-					},{
+					}
+					,{
 						type: 'checkbox',
 						name: 'autoResolveAllCensoredPost',
 						label: $getMessage('(may freeze your browser) Auto resolve all censored posts'),
 						initial: false
+					}
+					,{
+						type: 'checkbox',
+						name: 'showLog',
+						label: $getMessage('Show log'),
+						initial: true
 					}
 				]
 			}]

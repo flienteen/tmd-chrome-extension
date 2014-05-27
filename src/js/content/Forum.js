@@ -5,10 +5,12 @@ function Forum()
 	this.conf = config('global').Forum;
 	this.onTopicPage = window.location.search.match(/^\?action=viewtopic/)!=null;
 	this.topicId = location.search.replace(/.+topicid=(\d+).+/,'$1');
+	this.forumId = ($('.pageContainer h1 a[href*="action=viewforum"]:eq(0)').attr('href') || '').replace(/.+forumid=(\d+).*/,'$1');
 }
 
 Forum.prototype.run = function()
 {
+	this.postsLog();
 	this.uncensored();
 	this.likeOwnPosts();
 };
@@ -161,5 +163,96 @@ Forum.prototype.likeOwnPosts = function()
 
 		$.post('/forum.php', {ajax:1, postid:$(this).data('postid'), topicid:$this.topicId, action:action});
 		$(this).hide();
+	});
+};
+
+
+Forum.prototype.postsLog = function()
+{
+	if(!this.onTopicPage || !this.forumId || !this.conf['Censored Post'].showLog)
+		return;
+
+	var
+		self = this
+		, $tmp = $('<div></div>')
+		, __cacheId = 'log.'+self.forumId+'.posts'
+		, _cacheLogForum = _cache(__cacheId) || {}
+		, _s = ':'
+		, getLog
+	;
+
+	$$('.forumPostName').each(function()
+	{
+		var
+			$table = $(this)
+			, $tdComment = $table.next().find('.comment[align="center"]')
+		;
+
+		//ensuring that this is a censored post
+		if($tdComment.length && /(Cenzurat)|(Зацензурено)/.test($tdComment.text().trim()))
+		{
+			var
+				postID = parseInt($table.prev().attr('name')==='last' ? $table.prevAll(':eq(1)').attr('name') : $table.prev().attr('name'), 10)
+				, $by = $('<a></a>',{'class':'_censoredBy',html:'<img src="/pic/loading2.gif" />'})
+				, _log
+			;
+
+			$table.find('td[width="99%"]').append(' - <span class="_censoredBy">[censored by ',$by, ']</span>');
+
+			loadLog(1);
+
+			function loadLog(step)
+			{
+				if(_log = _cacheLogForum[postID])
+				{
+					_log = _log.split(_s);
+					$by.attr('href','/userdetails.php?id='+_log[0]).text(_log[1]);
+
+					return;
+				}
+
+				if(!step)
+				{
+					$by.html('?');
+					return;
+				}
+
+				if(getLog)
+				{
+					getLog.then(loadLog);
+					return;
+				}
+
+				getLog = $.Deferred(function(dfd)
+				{
+					$.get("/log_forums.php?forumid="+self.forumId, function(data)
+					{
+						$tmp.html(data).find('.forum_moderators tr td:nth-child(3)').each(function(i,v)
+						{
+							var $a = $(v).find('a');
+							if(!/.+action=viewtopic&topicid=(\d+)&page=p(\d+)#(\d+).*/.test($a.eq(0).attr('href')))
+								return;
+
+							var
+								_postId = $a.eq(0).attr('href').replace(/.+page=p(\d+).+/,'$1')
+								,_uId = $a.eq(1).attr('href').replace(/.+id=(\d+).*/,'$1')
+								,_uNick = $a.eq(1).text()
+							;
+
+							_cacheLogForum[parseInt(_postId,10)] = _uId+_s+_uNick;
+						});
+
+						//update cache \1440*7days = 10080
+						_cache.set(__cacheId, _cacheLogForum, 10080);
+
+						dfd.resolve();
+					});
+				});
+
+
+				getLog.then(loadLog);
+			}
+
+		}
 	});
 };

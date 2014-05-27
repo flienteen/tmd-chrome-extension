@@ -3,7 +3,7 @@
 function TMD()
 {
 	this.user = {};
-	this.version = '0.0.4';
+	this.version = '0.0.6';
 }
 
 TMD.prototype.run = function(cb)
