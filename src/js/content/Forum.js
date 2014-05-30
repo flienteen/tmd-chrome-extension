@@ -13,6 +13,7 @@ Forum.prototype.run = function()
 	this.postsLog();
 	this.uncensored();
 	this.likeOwnPosts();
+	this.imgFitOnComments();
 };
 
 Forum.prototype.uncensored = function()
@@ -254,5 +255,24 @@ Forum.prototype.postsLog = function()
 			}
 
 		}
+	});
+};
+
+
+Forum.prototype.imgFitOnComments = function()
+{
+	if(!this.onTopicPage || !(this.conf.Action.imgFit || this.conf.Action.imgFitSpoilers))
+		return;
+
+	var classes = '';
+
+	classes += this.conf.Action.imgFit ? 'imgFit' : '';
+	classes += this.conf.Action.imgFitSpoilers ? ' imgFitSpoilers' : '';
+
+	$(document.body).addClass(classes);
+
+	$(document).on('click', '.imgFitSpoilers .comment .sp-body img, .imgFit .comment img', function()
+	{
+		$(this).toggleClass('zoomedIn');
 	});
 };

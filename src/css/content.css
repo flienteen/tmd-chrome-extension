@@ -65,3 +65,19 @@ a.floatingIcon:hover img
 	font-weight: bold;
 	font-size: 12px;
 }
+
+
+.imgFitSpoilers .comment .sp-body img:not(.zoomedIn)
+{
+	max-width: 665px;
+	cursor: -webkit-zoom-in;
+}
+.imgFit .comment img:not(.zoomedIn)
+{
+	max-width: 690px;
+	cursor: -webkit-zoom-in;
+}
+img.zoomedIn
+{
+	cursor: -webkit-zoom-out;
+}

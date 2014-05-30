@@ -8,11 +8,24 @@ var manifest = {
 	[
 		{
 			"Forum": [{
-				"Action": [{
+				"Action": [
+					{
 						type: 'checkbox',
 						name: 'likeMyPosts',
 						label: $getMessage('Like on your own posts'),
 						initial: true
+					}
+					,{
+						type: 'checkbox',
+						name: 'imgFit',
+						label: $getMessage('(click to zoom) Fit images'),
+						initial: false
+					}
+					,{
+						type: 'checkbox',
+						name: 'imgFitSpoilers',
+						label: $getMessage('(click to zoom) Fit images in Spoilers'),
+						initial: false
 					}
 				]
 			}, {
