@@ -9,10 +9,26 @@ var
 	config = store.namespace('config')
 	, _cache = store.namespace('_cache')
 	, tmd
+
+	/**
+	 * Alias for console object
+	 * If logLevel isn't specified than nothing happens
+	 * ---
+	 * localStorage['extLogLevel'] = 'log|debug|trace|dir|...'
+	 */
 	, l = function()
 	{
-		console.debug.apply(console, arguments);
+		var logLevel = localStorage['extLogLevel'];
+		if(!logLevel || !console[logLevel]) return;
+
+		console[logLevel].apply(console, [].concat('>', Array.prototype.slice.call(arguments)));
 	}
+
+	/**
+	 * string __(string messageName, any substitutions)
+	 * Gets the localized string for the specified message, if no `messageName` found than return `messageName`
+	 * Alias for https://developer.chrome.com/extensions/i18n#method-getMessage
+	 */
 	, __ = function()
 	{
 		return chrome.i18n.getMessage.apply(this, arguments) || Array.prototype.slice.call(arguments).join(',');
