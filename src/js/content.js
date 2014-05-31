@@ -47,7 +47,18 @@ var
 
 ;
 
-
+/**
+ * Async wait function
+ * @param milliseconds
+ * @returns {Deferred}
+ */
+$.wait = function(milliseconds)
+{
+	return jQuery.Deferred(function(dfd)
+	{
+		setTimeout(dfd.resolve, milliseconds);
+	});
+};
 
 //run all
 (tmd = new TMD()).run(function()
