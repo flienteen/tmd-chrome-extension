@@ -8,6 +8,7 @@ function Browse()
 
 Browse.prototype.run = function()
 {
+	this.torrentTablePlus();
 	this.expandableTorrents();
 	this.massAddSearchButton();
 };
@@ -220,6 +221,41 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 };
 
 
+/**
+ * Create a fixed table on left side of `torrents table`
+ * ---
+ * this.$tablePlus - reference for created table
+ * this.$trPlus - reference for its rows, each row has .data('$tr') = reference for real $tr from `torrents table`
+ */
+Browse.prototype.torrentTablePlus = function torrentTablePlus()
+{
+	if(!this.onBrowsePage || !(this.conf.Show.massAddSearchButton || this.conf.Show.expandableTorrents))
+		return;
 
+	var
+		$torrentTable = $$('table.tableTorrents').length ? $$('table.tableTorrents') : $('.pageContainer > table td img[src*="arrowdown.gif"]').closest('table')
+		, $tablePlus = $('<div></div>',{id:'torrentTablePlus'}).hide()
+		, $trPlus = $('<div></div>',{'class':'torrentTablePlusTr'})
+		, _$trPlus = $()
+		, _torrentTableOffset = $torrentTable.offset()
+		, tablePlusCss = {
+			top: _torrentTableOffset.top
+			, right: _torrentTableOffset.left + $torrentTable.width()
+		}
+	;
+
+	//fill _$trPlus array
+	$torrentTable.find('tr').each(function()
+	{
+		_$trPlus = _$trPlus.add($trPlus.clone().css('height',$(this).height()).data('$tr', $(this)) );
+	});
+
+	//fill $tablePlus, apply styles and append it to DOM
+	$tablePlus.append(_$trPlus).css(tablePlusCss).appendTo(document.body).show(200);
+
+	//cache
+	this.$tablePlus = $tablePlus;
+	this.$trPlus = _$trPlus;
+};
 
 

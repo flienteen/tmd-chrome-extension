@@ -81,3 +81,13 @@ img.zoomedIn
 {
 	cursor: -webkit-zoom-out;
 }
+
+#torrentTablePlus
+{
+	position: absolute;
+}
+
+#torrentTablePlus .torrentTablePlusTr
+{
+
+}
