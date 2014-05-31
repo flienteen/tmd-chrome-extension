@@ -39,12 +39,18 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 		{
 			$button.val('+');
 			$tr.next().remove();
+
+			//update view location with previous one
+			$(window).scrollTop($tr.data('scrollTop'));
 		} else {
 			var
 				link = '/details.php?id='+torrentId
 				, __cache = window.__expandableTorrentsCache
 				, $trExpanded = $('<tr>',{'class':'expanded'}).insertAfter($tr)
 			;
+
+			//save current view location
+			$tr.data('scrollTop', $(window).scrollTop());
 
 			if(!__cache[link])
 			{
