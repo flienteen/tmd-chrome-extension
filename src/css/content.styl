@@ -1,0 +1,109 @@
+.decenzureaza
+	background #C7D5ED
+	a
+		cursor pointer
+
+.decenzureazat
+	background rgba(197, 208, 255, 0.17)
+
+._censoredBy
+	opacity .7
+	color #8F008F
+
+
+tr.expanded #detailsCategories span, tr.expanded #detailsCategories span:hover
+	border 0
+	background 0
+	line-height normal
+	-webkit-box-shadow initial
+	white-space normal
+	margin 0
+	padding 0
+	border-radius 0
+
+
+.tableTorrents
+	tr
+		&.expanded
+			a
+				font-weight normal
+
+
+a
+	&.floatingIcon
+		position fixed
+		left 0
+		bottom 10px
+		text-decoration none
+		span
+			display inline-block
+			width 0
+			height 19px
+			font-size 12px
+			overflow hidden
+			transition width 1s
+		img
+			opacity .2
+			transition opacity 2s
+		&:hover
+			text-decoration none
+			span
+				width 230px
+				overflow hidden
+			img
+				opacity 1
+
+.postLike
+	font-weight bold
+	font-size 12px
+
+
+.imgFitSpoilers
+	.comment
+		.sp-body
+			img
+				&:not(.zoomedIn)
+					max-width 665px
+					cursor -webkit-zoom-in
+
+.imgFit
+	.comment
+		img
+			&:not(.zoomedIn)
+				max-width 690px
+				cursor -webkit-zoom-in
+
+img
+	&.zoomedIn
+		cursor -webkit-zoom-out
+
+
+
+#torrentTablePlus
+	background rgba(180, 233, 172, 0.3)
+	position absolute
+
+	.torrentTablePlusTr
+		&:not(:empty)
+			position absolute
+			white-space nowrap
+			right 0
+			padding 5px 5px 0
+			border solid #a79f72 1px
+			border-right 0
+			background-color #ECE9D8
+			transition: all .3s
+
+		.massAddSearchButton
+			display inline-block
+			margin-left 2px
+
+			input[type="checkbox"]
+				margin 0
+				vertical-align -webkit-baseline-middle
+			input[type="button"]
+				margin-right  1px
+
+		.expandableTorrents
+			width 24px
+

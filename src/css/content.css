@@ -1,93 +1,98 @@
-
-.decenzureaza{ background:#C7D5ED;  }
-.decenzureaza a{ cursor: pointer;  }
-.decenzureazat{ background: rgba(197, 208, 255, 0.17); }
-._censoredBy { opacity: .7; color: #8F008F;}
-
-
-/*
-*  Browse
-*/
-tr.expanded #detailsCategories span, tr.expanded #detailsCategories span:hover
-{
-	border: 0;
-	background: 0;
-	line-height: normal;
-	-webkit-box-shadow: initial;
-	white-space: normal;
-	margin: 0;
-	padding: 0;
-	border-radius: 0;
+.decenzureaza {
+  background: #c7d5ed;
 }
-
-.tableTorrents tr.expanded a
-{
-	 font-weight: normal;
+.decenzureaza a {
+  cursor: pointer;
 }
-
-a.floatingIcon
-{
-	position: fixed;
-	left: 0;
-	bottom: 10px;
-	text-decoration: none;
+.decenzureazat {
+  background: rgba(197,208,255,0.17);
 }
-a.floatingIcon span
-{
-	display: inline-block;
-	width: 0;
-	height: 19px;
-	font-size: 12px;
-	overflow: hidden;
-	transition: width 1s;
+._censoredBy {
+  opacity: 0.7;
+  color: #8f008f;
 }
-a.floatingIcon img
-{
-	opacity: .2;
-	transition: opacity 2s;
+tr.expanded #detailsCategories span,
+tr.expanded #detailsCategories span:hover {
+  border: 0;
+  background: 0;
+  line-height: normal;
+  -webkit-box-shadow: initial;
+  white-space: normal;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
 }
-a.floatingIcon:hover
-{
-	text-decoration: none;
+.tableTorrents tr.expanded a {
+  font-weight: normal;
 }
-a.floatingIcon:hover span
-{
-	width: 230px;
-	overflow: hidden;
+a.floatingIcon {
+  position: fixed;
+  left: 0;
+  bottom: 10px;
+  text-decoration: none;
 }
-a.floatingIcon:hover img
-{
-	opacity: 1;
+a.floatingIcon span {
+  display: inline-block;
+  width: 0;
+  height: 19px;
+  font-size: 12px;
+  overflow: hidden;
+  transition: width 1s;
 }
-
-.postLike
-{
-	font-weight: bold;
-	font-size: 12px;
+a.floatingIcon img {
+  opacity: 0.2;
+  transition: opacity 2s;
 }
-
-
-.imgFitSpoilers .comment .sp-body img:not(.zoomedIn)
-{
-	max-width: 665px;
-	cursor: -webkit-zoom-in;
+a.floatingIcon:hover {
+  text-decoration: none;
 }
-.imgFit .comment img:not(.zoomedIn)
-{
-	max-width: 690px;
-	cursor: -webkit-zoom-in;
+a.floatingIcon:hover span {
+  width: 230px;
+  overflow: hidden;
 }
-img.zoomedIn
-{
-	cursor: -webkit-zoom-out;
+a.floatingIcon:hover img {
+  opacity: 1;
 }
-
-#torrentTablePlus
-{
-	position: absolute;
+.postLike {
+  font-weight: bold;
+  font-size: 12px;
 }
-
-#torrentTablePlus .torrentTablePlusTr
-{
-	position: absolute;
+.imgFitSpoilers .comment .sp-body img:not(.zoomedIn) {
+  max-width: 665px;
+  cursor: -webkit-zoom-in;
+}
+.imgFit .comment img:not(.zoomedIn) {
+  max-width: 690px;
+  cursor: -webkit-zoom-in;
+}
+img.zoomedIn {
+  cursor: -webkit-zoom-out;
+}
+#torrentTablePlus {
+  background: rgba(180,233,172,0.3);
+  position: absolute;
+}
+#torrentTablePlus .torrentTablePlusTr:not(:empty) {
+  position: absolute;
+  white-space: nowrap;
+  right: 0;
+  padding: 5px 5px 0;
+  border: solid #a79f72 1px;
+  border-right: 0;
+  background-color: #ece9d8;
+  transition: all 0.3s;
+}
+#torrentTablePlus .torrentTablePlusTr .massAddSearchButton {
+  display: inline-block;
+  margin-left: 2px;
+}
+#torrentTablePlus .torrentTablePlusTr .massAddSearchButton input[type="checkbox"] {
+  margin: 0;
+  vertical-align: -webkit-baseline-middle;
+}
+#torrentTablePlus .torrentTablePlusTr .massAddSearchButton input[type="button"] {
+  margin-right: 1px;
+}
+#torrentTablePlus .torrentTablePlusTr .expandableTorrents {
+  width: 24px;
 }
