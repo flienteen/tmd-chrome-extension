@@ -19,52 +19,45 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 	if(!this.onBrowsePage || !this.conf.Show.expandableTorrents)
 		return;
 
-	window.__addExpandToTorrentsCache = window.__addExpandToTorrentsCache || {};
-	var d = 'table.tableTorrents',
-		e = ($(d).length < 1) ? $('.pageContainer > table td img[src*="arrowdown.gif"]').closest('table') : $(d),
-		f = e.find('tr:nth-child(1)'),
-		__cache = window.__addExpandToTorrentsCache,
-		g = $('<td>',
-			{
-				align: 'center',
-				'class': 'colhead'
-			}).prependTo(f).text('expand');
+	//cache object
+	window.__expandableTorrentsCache = window.__expandableTorrentsCache || {};
 
+	//Expand button
+	$('<input>',{type:'button',value:'+','class':'expandableTorrents'}).appendTo(this.$trPlus.not(':eq(0)'));
 
-	e.find('tr:not(:nth-child(1))').each(function ()
-	{
-		var tr = $(this),
-			link = tr.find('a[href*="details.php"]').eq(0),
-			_td = $('<td>',
-				{
-					align: 'center',
-					style:'white-space: nowrap'
-				}).prependTo(tr);
-
-		$('<input>',{type:'button',value:'+'}).data({link:link.attr('href'), text:link.text(), tr:tr}).appendTo(_td).click(expandTorrent);
-	});
-
-	function expandTorrent()
+	//on expand button is clicked
+	$(document.body).on('click','#torrentTablePlus .torrentTablePlusTr .expandableTorrents', function()
 	{
 		var
-			$v = $(this),
-			d = $v.data();
+			$button = $(this)
+			, $parent = $button.parent()
+			, $tr = $parent.data('$tr')
+			, torrentId = $parent.data('torrentId')
+		;
 
-		if(d.tr.next().is('.expanded'))
+		if($tr.next().is('.expanded'))
 		{
-			$v.val('+');
-			d.tr.next().remove();
+			$button.val('+');
+			$tr.next().remove();
 		} else {
-			var $tr = $('<tr>',{'class':'expanded'}).insertAfter(d.tr);
+			var
+				link = '/details.php?id='+torrentId
+				, __cache = window.__expandableTorrentsCache
+				, $trExpanded = $('<tr>',{'class':'expanded'}).insertAfter($tr)
+			;
 
-			d.link = getRealLink(d);
-
-			if(!__cache[d.link])
+			if(!__cache[link])
 			{
-				__cache[d.link]='<pic src="/pic/loading2.gif" />';
-				var $_ = $('<div>').load(d.link+' .pageContainer > table[width="880"][border="1"][cellspacing="0"][cellpadding="5"]', function()
+				__cache[link] = torrentId ? '<pic src="/pic/loading2.gif" />' : 'Error[no_ID]';
+
+				if(!torrentId)
 				{
-					__cache[d.link] = $_.html();
+					return _done();
+				}
+
+				var $_ = $('<div>').load(link+' .pageContainer > table[width="880"][border="1"][cellspacing="0"][cellpadding="5"]', function()
+				{
+					__cache[link] = $_.html();
 					_done();
 				});
 			}
@@ -72,45 +65,19 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 			_done();
 			function _done()
 			{
-				$tr.html('<td colspan="'+ d.tr.find('td').length +'">'+__cache[d.link]+'</td>').find('>td>table').css('width','867px').find('tbody>tr>td:first-child').css({'background-color': 'rgb(216, 211, 180)', cursor: 'pointer'}).click(function(){
-					$v.click();
-				});
-				$v.val('-');
+				$trExpanded.html('<td colspan="'+ $tr.find('td').length +'">'+__cache[link]+'</td>')
+					.find('>td>table').css('width','867px')
+					.find('tbody>tr>td:first-child').css({'background-color': 'rgb(216, 211, 180)', cursor: 'pointer'}).click(function()
+					{
+						$button.click();
+					});
+
+				$button.val('-');
 			}
 		}
-	}
+	});
 
-	function getRealLink(obj)
-	{
-		var _l = obj.link.replace(/page=(\d*)/,'');
-
-		if(!/\?imdb=/.test(_l))
-			return _l;
-
-		//getting id
-		var $a = obj.tr.find('a[href*="details.php?id="]').eq(0)
-			,id = $a.length ? $a.attr('href').replace(/.+php\?id=(\d+).+/,'$1') : ''
-		;
-
-		if(!id)
-		{
-			//todo load imbd page
-			return console.error('TODO> no id');
-		}
-
-		return '/details.php?id='+id;
-
-	/*	var $c = $('<div></div>');
-		$c.load(link+' .tableTorrents tr a[href^="/details.php"]', function()
-		{
-			$c.find('a').each(function()
-			{
-
-			});
-		});*/
-	}
-
-	//
+	//thanks button
 	$(document.body).on('click', '.expanded form input[name="thank"]', function(e)
 	{
 		e.preventDefault();
@@ -141,8 +108,6 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 			})
 		;
 	});
-
-
 };
 
 
