@@ -214,13 +214,19 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 	/**
 	 * update $trPlus positions
 	 */
+	var lastTimeUpdated = 0;
 	function updateTrPlusPosition()
 	{
+		if(new Date() - lastTimeUpdated < 400 )
+			return;
+
 		_$trPlus.each(function()
 		{
 			var $tr = $(this).data('$tr');
-			$(this).css({'height':$tr.height(), 'top':$tr.offset().top})
+			$(this).css({'height':$tr.height()-6, 'top':$tr.offset().top})
 		});
+
+		lastTimeUpdated = new Date();
 	}
 };
 
