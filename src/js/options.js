@@ -80,6 +80,10 @@ var manifest = {
 		,{
 			"About": '#about-page'
 		}
+
+		,{
+			"Change Log": '#change-log'
+		}
 	]
 };
 
@@ -87,11 +91,19 @@ var manifest = {
 
 window.addEventListener("DOMContentLoaded", function()
 {
-	var
-		settingsObj = {}
-		, settings = new Settings(manifest, 'chrome', 'ConfigSettings')
-	;
+	if(location.hash==='#log')
+		manifest.initialTab = 'Change Log';
+
+
+	new Settings(manifest, 'chrome', 'ConfigSettings');
 
 
 	$find('#about-page > h2').innerHTML = manifest.name;
+
+	//fill content
+	document.getElementById('changeLog').onload = function()
+	{
+		document.getElementById('changeLogContent').innerHTML = this.contentWindow.document.body.innerText
+	};
+
 });

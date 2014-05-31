@@ -139,3 +139,9 @@ I like the idea of a little more space after this element, but do it by targetti
 {
 	color: #99B0D3;
 }
+
+#changeLogContent
+{
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}

@@ -1,0 +1,38 @@
+0.0.8
+---------------------------------------------
+changed: Browse-> new UI for Expand/Search Actions
+added: Option-> change log page
+added: Browse-> return to previous view location on Expand
+
+
+0.0.7
+---------------------------------------------
+added: Forum-> Fit images in forum posts/spoilers (click to zoom)
+
+
+0.0.6
+---------------------------------------------
+added: Forum-> show posts log
+
+
+0.0.5
+---------------------------------------------
+bugfix: Forum-> don't execute likeOwnPosts if user isn't logged
+added: Forum-> show all censored posts on page
+added: Forum-> auto resolve all censored posts
+
+
+0.0.4
+---------------------------------------------
+bugfix: force user to view option page on extension update
+bugfix: fixing uncensoring function
+
+
+0.0.3
+---------------------------------------------
+added: Forum-> like/unlike button on user's own posts
+
+
+0.0.1
+---------------------------------------------
+first public version
