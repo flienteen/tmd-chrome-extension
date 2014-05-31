@@ -89,5 +89,5 @@ img.zoomedIn
 
 #torrentTablePlus .torrentTablePlusTr
 {
-
+	position: absolute;
 }

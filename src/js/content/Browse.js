@@ -237,25 +237,53 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 		, $tablePlus = $('<div></div>',{id:'torrentTablePlus'}).hide()
 		, $trPlus = $('<div></div>',{'class':'torrentTablePlusTr'})
 		, _$trPlus = $()
-		, _torrentTableOffset = $torrentTable.offset()
 		, tablePlusCss = {
-			top: _torrentTableOffset.top
-			, right: _torrentTableOffset.left + $torrentTable.width()
+			top: 0
+			, right: $torrentTable.offset().left + $torrentTable.width()
 		}
 	;
 
 	//fill _$trPlus array
 	$torrentTable.find('tr').each(function()
 	{
-		_$trPlus = _$trPlus.add($trPlus.clone().css('height',$(this).height()).data('$tr', $(this)) );
+		var
+			$a = $(this).find('a[href*="details.php?id="]').eq(0)
+			, id = $a.length ? parseInt($a.attr('href').replace(/.+php\?id=(\d+).*/,'$1'),10) : 0
+		;
+
+		_$trPlus = _$trPlus.add($trPlus.clone().data({'$tr': $(this), torrentId:id}) );
 	});
 
 	//fill $tablePlus, apply styles and append it to DOM
 	$tablePlus.append(_$trPlus).css(tablePlusCss).appendTo(document.body).show(200);
 
+	//update before showing
+	updateTrPlusPosition();
+
 	//cache
 	this.$tablePlus = $tablePlus;
 	this.$trPlus = _$trPlus;
+
+	//update $trPlus positions on $torrentTable DOMSubtreeModified
+	$torrentTable.on('DOMSubtreeModified', function()
+	{
+		[10, 200, 400].forEach(function(time)
+		{
+			$.wait(time).then(updateTrPlusPosition);
+		});
+	});
+
+	/**
+	 * update $trPlus positions
+	 */
+	function updateTrPlusPosition()
+	{
+		_$trPlus.each(function()
+		{
+			var $tr = $(this).data('$tr');
+			$(this).css({'height':$tr.height(), 'top':$tr.offset().top})
+		});
+	}
 };
 
 
