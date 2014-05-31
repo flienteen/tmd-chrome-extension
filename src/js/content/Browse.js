@@ -116,69 +116,42 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 	if(!this.onBrowsePage || !this.conf.Show.massAddSearchButton)
 		return;
 
-	//TODO refactor this `shitty` code
+	var
+		$massAddSearchButton = $('<div></div>',{'class':'massAddSearchButton'})
+	;
 
-	var d = 'table.tableTorrents';
-	var e = $(d);
-	if(e.length < 1) e = $('.pageContainer > table td img[src*="arrowdown.gif"]').closest('table');
-	var f = e.find('tr:nth-child(1)');
-	var g = $('<td>',
-		{
-			align: 'center',
-			'class': 'colhead'
-		}).prependTo(f);
+	$('<input>',{type: 'button', value: 'S'}).appendTo($massAddSearchButton);
+	$('<input>',{type: 'checkbox'}).appendTo($massAddSearchButton);
 
+	$massAddSearchButton.appendTo(this.$trPlus.not(':eq(0)'));
 
-	e.find('tr:not(:nth-child(1))').each(function ()
+	$(document.body).on('click', '#torrentTablePlus .massAddSearchButton [type="button"]', function()
 	{
-		var tr = $(this),
-			link = tr.find('a').eq(1),
-			b = link.attr('href').replace(/.*id=/, ''),
-			t = link.text(),
-			titleSpan = $('<span>').text(t).insertAfter(link).hide();
-		_td = $('<td>',
-			{
-				align: 'center',
-				style:'white-space: nowrap'
-			}).prependTo(tr);
+		var
+			$parent = $(this).closest('.torrentTablePlusTr').data('$tr')
+			, $td = $parent.find('td[align="left"]:eq(0)')
+			, text = getSelectionText() || $td.find('a').text()
+			, win = window.open(window.location.origin + '/search.php?search_str='+encodeURIComponent(text), '_blank');
 
-
-		$('<input>',
-			{
-				type: 'button',
-				value: 'S!'
-			}).appendTo(_td).click(function()
-			{
-				var text = getSelectionText() || t;
-				var win=window.open('http://www.torrentsmd.com/search.php?search_str='+encodeURIComponent(text), '_blank');
-				win.focus();
-			});
-
-
-		$('<input>',
-			{
-				type: 'checkbox',
-				name: 'bbt' + b,
-				value: b,
-				'data-title':t,
-				'class': 'massAddSearchButton'
-			}).appendTo(_td).change(function()
-			{
-				titleSpan.toggle();
-				link.toggle();
-			});
+		win.focus();
 	});
 
+	$(document.body).on('change', '#torrentTablePlus .massAddSearchButton [type="checkbox"]', function()
+	{
+		var
+			$parent = $(this).closest('.torrentTablePlusTr').data('$tr')
+			, $td = $parent.find('td[align="left"]:eq(0)')
+			, $link = $td.find('a')
+			, $titleSpan = $td.find('span.titleSpan').length ? $td.find('span.titleSpan') : $('<span>',{'class':'titleSpan'}).text($link.text()).insertAfter($link).hide()
+		;
+
+		$link.toggle();
+		$titleSpan.toggle();
+	});
 
 	function getSelectionText()
 	{
-		var text = "";
-		if (window.getSelection) {
-			text = window.getSelection().toString();
-		} else if (document.selection && document.selection.type != "Control") {
-			text = document.selection.createRange().text;
-		}
-		return text;
+		return window.getSelection().toString();
 	}
 
 
