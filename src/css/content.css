@@ -114,6 +114,7 @@ img.zoomedIn {
   color: buttontext;
   text-decoration: none;
   cursor: pointer;
+  margin: 1px;
 }
 #torrentTablePlus .torrentTablePlusTr .massAddSearchButton {
   display: inline-block;
