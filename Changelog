@@ -2,6 +2,7 @@
 ---------------------------------------------
 added: Browse-> download button on browse page
 added: Browse-> thanks button on browse page
+changed: Option-> are now loaded in background if a new version is required
 
 
 

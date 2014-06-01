@@ -41,14 +41,30 @@ TMD.prototype.updateConfig = function updateConfig(cbs)
 		{
 			config('version', $this.version);
 
-			return location.assign(chrome.extension.getURL('options.html'));
+			//loading settings without changing page's url
+			try
+			{
+				$('<iframe></iframe>',{src: chrome.extension.getURL('options.html')}).appendTo(document.body).on('load', function()
+				{
+					$.wait(400).then(callback);
+				});
+			} catch(e){
+				l('Error in loading new settings', e);
+			}
+
+			return;
 		}
 
+		callback();
+	});
+
+	function callback()
+	{
 		[].concat(cbs).forEach(function(cb)
 		{
 			typeof cb === "function" && cb();
 		});
-	});
+	}
 };
 
 
