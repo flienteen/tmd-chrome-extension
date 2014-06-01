@@ -3,7 +3,7 @@
 function TMD()
 {
 	this.user = {};
-	this.version = '0.0.9';
+	this.version = '0.0.9.1';
 	this.oldVersion = '';
 }
 
@@ -127,7 +127,7 @@ TMD.prototype.newVersionNotify = function newVersionNotify()
 	chrome.storage.local.get('extVersionClicked', function(_extVersionClicked)
 	{
 		//updating global version of _extVersionClicked
-		extVersionClicked = _extVersionClicked.extVersionClicked;
+		extVersionClicked = _extVersionClicked.extVersionClicked || {};
 
 		extVersionClicked[self.version] && clicked();
 	});
