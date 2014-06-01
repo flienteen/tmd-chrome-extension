@@ -4,6 +4,7 @@ function TMD()
 {
 	this.user = {};
 	this.version = '0.0.6';
+	this.oldVersion = '';
 }
 
 TMD.prototype.run = function(cb)
@@ -13,6 +14,7 @@ TMD.prototype.run = function(cb)
 	//this.contextMenus();
 	this.floatingIcon();
 	this.getUser();
+	this.newVersionNotify();
 };
 
 /**
@@ -23,8 +25,8 @@ TMD.prototype.updateConfig = function updateConfig(cbs)
 {
 	var
 		$this = this
-		, version = config('version')
 	;
+	$this.oldVersion = config('version');
 
 	chrome.storage.local.get('ConfigSettings', function(conf)
 	{
@@ -37,14 +39,14 @@ TMD.prototype.updateConfig = function updateConfig(cbs)
 		conf = conf.ConfigSettings;
 		config('global', conf.settings);
 
-		if(version != $this.version)
+		if($this.oldVersion != $this.version)
 		{
 			config('version', $this.version);
 
 			//loading settings without changing page's url
 			try
 			{
-				$('<iframe></iframe>',{src: chrome.extension.getURL('options.html')}).appendTo(document.body).on('load', function()
+				$('<iframe></iframe>',{src: chrome.extension.getURL('options.html')}).hide().appendTo(document.body).on('load', function()
 				{
 					$.wait(400).then(callback);
 				});
@@ -74,18 +76,43 @@ TMD.prototype.contextMenus = function contextMenus()
 };
 
 
-
+/**
+ * display this extension icon on each page
+ */
 TMD.prototype.floatingIcon = function floatingIcon()
 {
-	var
-		$icon = $('<a></a>',{'class':'floatingIcon', html:'&nbsp;<span></span> <img />'}).appendTo(document.body)
-		, $span = $icon.find('span')
-		, $img = $icon.find('img')
-	;
+	this.$floatingIcon = {};
 
-	$icon.attr('href', chrome.extension.getURL('options.html'));
-	$span.text(__('extName'));
-	$img.attr('src', chrome.extension.getURL('icons/icon19.png'));
+	this.$floatingIcon.$div = $('<div></div>',{'class':'floatingDiv'}).appendTo(document.body);
+	this.$floatingIcon.$a =  $('<a></a>',{'class':'floatingIcon', html:'<img /> <span></span>'}).appendTo(this.$floatingIcon.$div);
+	this.$floatingIcon.$span =  this.$floatingIcon.$a.find('span');
+	this.$floatingIcon.$img =  this.$floatingIcon.$a.find('img');
+
+
+	this.$floatingIcon.$a.attr('href', chrome.extension.getURL('options.html#log'));
+	this.$floatingIcon.$span.text(__('extName'));
+	this.$floatingIcon.$img.attr('src', chrome.extension.getURL('icons/icon19.png'));
+};
+
+/**
+ * animate floatingIcon on new version
+ */
+TMD.prototype.newVersionNotify = function newVersionNotify()
+{
+	if(this.oldVersion === this.version && config('extNewVersionClicked'))
+		return;
+
+	l('new version detected, animating floatingIcon');
+	//updating extNewVersionClicked value
+	config('extNewVersionClicked', false);
+
+	//animate floatingIcon
+	this.$floatingIcon.$div.addClass('tadaAnimation');
+
+	this.$floatingIcon.$a.click(function()
+	{
+		config('extNewVersionClicked', true);
+	});
 };
 
 
