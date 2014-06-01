@@ -175,7 +175,7 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
  */
 Browse.prototype.torrentTablePlus = function torrentTablePlus()
 {
-	if(!this.onBrowsePage || !(this.conf.Show.massAddSearchButton || this.conf.Show.expandableTorrents))
+	if(!this.onBrowsePage || !(this.conf.Show.massAddSearchButton || this.conf.Show.expandableTorrents || this.conf.Show.thanksButton || this.conf.Show.downloadButton))
 		return;
 
 	var
