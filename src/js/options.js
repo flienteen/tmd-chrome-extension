@@ -79,6 +79,12 @@ var manifest = {
 						label: $getMessage('Show download button'),
 						initial: true
 					}
+					,{
+						type: 'checkbox',
+						name: 'thanksButton',
+						label: $getMessage('Show thanks button'),
+						initial: true
+					}
 				]
 			}]
 		}

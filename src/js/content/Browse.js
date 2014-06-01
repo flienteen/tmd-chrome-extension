@@ -12,6 +12,7 @@ Browse.prototype.run = function()
 	this.expandableTorrents();
 	this.massAddSearchButton();
 	this.downloadButton();
+	this.thanksButton();
 };
 
 
@@ -251,5 +252,34 @@ Browse.prototype.downloadButton = function downloadButton()
 	this.$trPlus.not(':eq(0)').each(function()
 	{
 		$a.clone().attr('href', '/download.php?id='+$(this).data('torrentId')).appendTo($(this));
+	});
+};
+
+
+/**
+ * add thanks button on TorrentTablePlus
+ */
+Browse.prototype.thanksButton = function thanksButton()
+{
+	if(!this.onBrowsePage || !this.conf.Show.thanksButton)
+		return;
+
+	//thanks button
+	$('<input>',{type:'button',value:'T','class':'thanksButton'}).appendTo(this.$trPlus.not(':eq(0)'));
+
+	//on thanks button is clicked
+	$(document.body).on('click','#torrentTablePlus .torrentTablePlusTr .thanksButton', function()
+	{
+		var
+			$button = $(this)
+			, $parent = $button.parent()
+			, torrentId = $parent.data('torrentId')
+		;
+
+		//disable button once it was clicked
+		$button.prop('disabled', true);
+
+		//send thanks request
+		$.post('./details.php', {id:torrentId, thank:1, async:1});
 	});
 };
