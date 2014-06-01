@@ -73,6 +73,12 @@ var manifest = {
 						label: $getMessage('Search button on left side of Torrent'),
 						initial: false
 					}
+					,{
+						type: 'checkbox',
+						name: 'downloadButton',
+						label: $getMessage('Show download button'),
+						initial: true
+					}
 				]
 			}]
 		}

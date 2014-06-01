@@ -11,6 +11,7 @@ Browse.prototype.run = function()
 	this.torrentTablePlus();
 	this.expandableTorrents();
 	this.massAddSearchButton();
+	this.downloadButton();
 };
 
 
@@ -237,3 +238,18 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 };
 
 
+/**
+ * add download button on TorrentTablePlus
+ */
+Browse.prototype.downloadButton = function downloadButton()
+{
+	if(!this.onBrowsePage || !this.conf.Show.downloadButton)
+		return;
+
+	//Download button
+	var $a = $('<a></a>',{type:'button',text:'D','class':'downloadButton'});
+	this.$trPlus.not(':eq(0)').each(function()
+	{
+		$a.clone().attr('href', '/download.php?id='+$(this).data('torrentId')).appendTo($(this));
+	});
+};
