@@ -54,6 +54,12 @@ var manifest = {
 						label: $getMessage('Show log'),
 						initial: true
 					}
+					,{
+						type: 'checkbox',
+						name: 'mofHideCensored',
+						label: $getMessage('(MOF+) Hide text from censored posts'),
+						initial: false
+					}
 				]
 			}]
 		}

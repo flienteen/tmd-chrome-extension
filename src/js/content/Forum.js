@@ -18,7 +18,7 @@ Forum.prototype.run = function()
 
 Forum.prototype.uncensored = function()
 {
-	if(!this.onTopicPage || !(this.conf['Censored Post'].showUncensoreButton || this.conf['Censored Post'].showUncensoreAllButton || this.conf['Censored Post'].autoResolveAllCensoredPost))
+	if(!this.onTopicPage || !(this.conf['Censored Post'].showUncensoreButton || this.conf['Censored Post'].showUncensoreAllButton || this.conf['Censored Post'].autoResolveAllCensoredPost || this.conf['Censored Post'].mofHideCensored))
 		return;
 
 	var
@@ -34,15 +34,18 @@ Forum.prototype.uncensored = function()
 		var
 			$table = $(this)
 			, $tdComment = $table.next().find('.comment[align="center"]')
+			, $trMof = $table.next().find('tr[style="background-color:#FAEBE2"]')
+			, isCensored = $tdComment.length && /(Cenzurat)|(Зацензурено)/.test($tdComment.text().trim())
+			, isMOFCensored = self.conf['Censored Post'].mofHideCensored && $trMof.length
 		;
 
 		//ensuring that this is a censored post
-		if($tdComment.length && /(Cenzurat)|(Зацензурено)/.test($tdComment.text().trim()))
+		if(isCensored || isMOFCensored)
 		{
 			var
 				userID = $table.find('a[href*="userdetails.php?id="]').attr('href').replace(/.*id=/, "")
 				, postID = $table.prev().attr('name')==='last' ? $table.prevAll(':eq(1)').attr('name') : $table.prev().attr('name')
-				, $showPost = $('<a></a>',{text:__('Show post'), 'postID':postID, 'userID':userID}).data('$tr', $tdComment.parent())
+				, $showPost = $('<a></a>',{text:__('Show post'), 'postID':postID, 'userID':userID}).data('$tr', isMOFCensored ? $trMof : $tdComment.parent())
 				, $showAllPost = $('<a></a>',{text:__('Show all posts')})
 				, _append = []
 			;
@@ -58,6 +61,12 @@ Forum.prototype.uncensored = function()
 				_append.push(_p,$showAllPost,']');
 			}
 
+			if(isMOFCensored)
+			{
+				//clear avatar
+				$trMof.find('td').eq(0).empty();
+				$tdComment = $trMof.find('.comment');
+			}
 
 			$tdComment.empty().append.apply($tdComment, _append).parent().addClass('decenzureaza');
 			$showPosts = $showPosts.add($showPost);
