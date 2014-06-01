@@ -3,7 +3,7 @@
 function TMD()
 {
 	this.user = {};
-	this.version = '0.0.6';
+	this.version = '0.0.6o3o';
 	this.oldVersion = '';
 }
 
@@ -102,7 +102,13 @@ TMD.prototype.newVersionNotify = function newVersionNotify()
 	if(this.oldVersion === this.version && config('extNewVersionClicked'))
 		return;
 
-	l('new version detected, animating floatingIcon');
+	l('newVersionNotify', 'new version detected, animating floatingIcon');
+
+	var
+		self = this
+		, extVersionClicked = {}
+	;
+
 	//updating extNewVersionClicked value
 	config('extNewVersionClicked', false);
 
@@ -111,8 +117,29 @@ TMD.prototype.newVersionNotify = function newVersionNotify()
 
 	this.$floatingIcon.$a.click(function()
 	{
-		config('extNewVersionClicked', true);
+		//save this click using the Chrome extension storage API
+		extVersionClicked[self.version] = true;
+		chrome.storage.local.set({'extVersionClicked': extVersionClicked}, clicked);
 	});
+
+
+	//check if user hasn't already clicked on changeLog
+	chrome.storage.local.get('extVersionClicked', function(_extVersionClicked)
+	{
+		//updating global version of _extVersionClicked
+		extVersionClicked = _extVersionClicked.extVersionClicked;
+
+		extVersionClicked[self.version] && clicked();
+	});
+
+	/**
+	 * stop animation
+	 */
+	function clicked()
+	{
+		config('extNewVersionClicked', true);
+		self.$floatingIcon.$div.removeClass('tadaAnimation');
+	}
 };
 
 
