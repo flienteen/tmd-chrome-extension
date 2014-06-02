@@ -3,7 +3,7 @@
 function Browse()
 {
 	this.conf = config('global').Browse;
-	this.onBrowsePage = window.location.pathname === "/browse.php";
+	this.onBrowsePage = /^\/(browse|search|mytorrents|bookmarks)\.php$/.test(window.location.pathname);
 }
 
 Browse.prototype.run = function()
@@ -213,7 +213,7 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 	//update $trPlus positions on $torrentTable DOMSubtreeModified
 	$torrentTable.on('DOMSubtreeModified', function()
 	{
-		[10, 200, 400].forEach(function(time)
+		[10, 400, 900].forEach(function(time)
 		{
 			$.wait(time).then(updateTrPlusPosition);
 		});
