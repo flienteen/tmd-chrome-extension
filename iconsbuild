@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ "$1" == "" ]; then
+    echo "no image specified!"
+    exit
+fi
+ICONSPATH="./icons"
+
+#empty folder
+rm -rfv "$ICONSPATH"/*
+mkdir -pv "$ICONSPATH"
+
+for res in 16 19 32 48 128
+do
+	img="$ICONSPATH/icon$res.png"
+	convert -resize $res"x"$rex -- "$1" "$img" && echo "created ‘$img’"
+done
