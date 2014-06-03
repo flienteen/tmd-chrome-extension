@@ -334,6 +334,15 @@ Forum.prototype.imgZoom = function()
 		})();
 	}
 
+	//if preload is activated
+	self.conf.Action.linkImagePreviewAutoLoad && $$('td.comment').find('a').each(function(i, a)
+	{
+		if(!isImage(a.href))
+			return;
+
+		//cache image
+		getImg(a.href);
+	});
 
 	$$('td.comment').on('mousemove', 'a', function(e)
 	{

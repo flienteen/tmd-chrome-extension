@@ -33,6 +33,12 @@ var manifest = {
 						label: $getMessage('(hover to view) Preview images under links'),
 						initial: true
 					}
+					,{
+						type: 'checkbox',
+						name: 'linkImagePreviewAutoLoad',
+						label: $getMessage('Preload all images for `Hover Preview`'),
+						initial: true
+					}
 				]
 			}, {
 				"Censored Post": [
