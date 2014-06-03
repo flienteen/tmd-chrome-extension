@@ -1,3 +1,9 @@
+0.1.2.1
+---------------------------------------------
+changed: UI-> new icon
+bugfix: Forum-> [show post] - [show all posts]
+
+
 0.1.1
 ---------------------------------------------
 changed: Browse-> call browse functions on all pages where are torrents

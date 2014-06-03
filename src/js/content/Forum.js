@@ -45,8 +45,8 @@ Forum.prototype.uncensored = function()
 			var
 				userID = $table.find('a[href*="userdetails.php?id="]').attr('href').replace(/.*id=/, "")
 				, postID = $table.prev().attr('name')==='last' ? $table.prevAll(':eq(1)').attr('name') : $table.prev().attr('name')
-				, $showPost = $('<a></a>',{text:__('Show post'), 'postID':postID, 'userID':userID}).data('$tr', isMOFCensored ? $trMof : $tdComment.parent())
-				, $showAllPost = $('<a></a>',{text:__('Show all posts')})
+				, $showPost = $('<a></a>',{text:__('Show post'), 'class':'showPost', 'postID':postID, 'userID':userID}).data('$tr', isMOFCensored ? $trMof : $tdComment.parent())
+				, $showAllPost = $('<a></a>',{text:__('Show all posts'), 'class':'showAllPost'})
 				, _append = []
 			;
 
@@ -75,7 +75,7 @@ Forum.prototype.uncensored = function()
 	});
 
 
-	$showPosts.one('click', function()
+	$(document.body).on('click', 'a.showPost', function()
 	{
 		var
 			$tr = $(this).data('$tr')
@@ -119,7 +119,7 @@ Forum.prototype.uncensored = function()
 	});
 
 
-	$showAllPosts.one('click', showAllPosts);
+	$(document.body).on('click', 'a.showAllPost', showAllPosts);
 
 
 	self.conf['Censored Post'].autoResolveAllCensoredPost && showAllPosts();
