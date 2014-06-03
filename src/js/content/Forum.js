@@ -129,7 +129,8 @@ Forum.prototype.uncensored = function()
 
 	function showAllPosts()
 	{
-		$showPosts.each(function(i,v)
+		//$showPosts.each(function(i,v)
+		$('a.showPost').each(function(i,v)
 		{
 			//async
 			setTimeout(function()
