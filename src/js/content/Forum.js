@@ -335,6 +335,30 @@ Forum.prototype.imgZoom = function()
 		})();
 	}
 
+	/**
+	 * Trying to guess image url, if there is a direct link then return true
+	 * @param a tag
+	 * @returns {boolean}
+	 */
+	function guessLink(a)
+	{
+		/**
+		 * iceimg =>
+		 * 		http://iceimg.com/3_Y13ZSg/10369118-63104343460870-8857422334454843890-n =
+		 * 		http://g.iceimg.com/3_Y13ZSg/10369118-63104343460870-8857422334454843890-n.jpg
+		 */
+		if(/^http:\/\/iceimg\.com\//.test(a.href))
+		{
+			l('Forum.imgZoom:guessLink => iceimg:', a.href);
+			a.href = a.href.replace(/iceimg.com/,'g.iceimg.com') + '.jpg';
+			l('\t\t\t\t\t\t\tnow>', a.href);
+
+			return true;
+		}
+
+		return false;
+	}
+
 	//if preload is activated
 	self.conf.Action.linkImagePreviewAutoLoad && $$('td.comment').find('a').each(function(i, a)
 	{
@@ -355,7 +379,7 @@ Forum.prototype.imgZoom = function()
 			}
 		;
 
-		if(!isImage(a.href))
+		if(!isImage(a.href) && !guessLink(a))
 			return;
 
 		$imgDiv.putLoadingImage().show().css(pos);

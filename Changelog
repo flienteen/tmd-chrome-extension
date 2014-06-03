@@ -1,6 +1,12 @@
+0.1.3.2
+---------------------------------------------
+bugfix: Forum-> [show post] - [show all posts]
+added: Forum-> `Hover Preview` trying to guess direct link from Iceimg.com
+
+
 0.1.3
 ---------------------------------------------
-added: Forum-> (hove) Preview images under links
+added: Forum-> (hover) Preview images under links
 added: Forum-> Preload all images for `Hover Preview`
 
 
