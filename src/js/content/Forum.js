@@ -25,7 +25,6 @@ Forum.prototype.uncensored = function()
 	var
 		$trComment = $()
 		, $showPosts = $()
-		, $showAllPosts = $()
 		, self = this
 	;
 
@@ -71,7 +70,6 @@ Forum.prototype.uncensored = function()
 
 			$tdComment.empty().append.apply($tdComment, _append).parent().addClass('decenzureaza');
 			$showPosts = $showPosts.add($showPost);
-			$showAllPosts = $showAllPosts.add($showAllPost);
 		}
 	});
 
@@ -79,7 +77,10 @@ Forum.prototype.uncensored = function()
 	$(document.body).on('click', 'a.showPost', function()
 	{
 		var
-			$tr = $(this).data('$tr')
+			$tr = $(this).data('$tr') || (function(a)
+			{
+				return $tr = $(a).closest('tr')
+			})(this)
 			, $td = $tr.find('.comment').html('<img src="/pic/loading2.gif" />')
 			, userID = $(this).attr('userID')
 			, postID = $(this).attr('postID')
