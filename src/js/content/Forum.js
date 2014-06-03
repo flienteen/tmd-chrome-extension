@@ -14,6 +14,7 @@ Forum.prototype.run = function()
 	this.uncensored();
 	this.likeOwnPosts();
 	this.imgFitOnComments();
+	this.imgZoom();
 };
 
 Forum.prototype.uncensored = function()
@@ -285,3 +286,91 @@ Forum.prototype.imgFitOnComments = function()
 		$(this).toggleClass('zoomedIn');
 	});
 };
+
+
+/**
+ * Image hover zoom
+ */
+Forum.prototype.imgZoom = function()
+{
+	if(!this.onTopicPage || !this.conf.Action.linkImagePreview)
+		return;
+
+	$.fn.putLoadingImage = function()
+	{
+		return this.html('<img src="/pic/loading2.gif" />');
+	};
+
+	var
+		$imgDiv = $('<div></div>',{'class':'imgZoom'}).putLoadingImage().appendTo(document.body)
+		, windowHeight = $(window).height()
+		, $_img = $('<img />')
+		, _imgs = {}
+		, isImage = function(src)
+		{
+			return /.+\.(jpg|gif|png|jpeg)$/.test(src);
+		}
+		, self = this
+	;
+
+	//update window height on window resize
+	$(window).resize(function()
+	{
+		windowHeight = $(window).height();
+	});
+
+	//cache image
+	function getImg(src, cb)
+	{
+		cb = cb || $.noop;
+
+		_imgs[src] && cb(_imgs[src]) || (function()
+		{
+			var $img = $_img.clone().attr('src', src).load(function()
+			{
+				_imgs[src] = $img;
+				cb(_imgs[src]);
+			});
+		})();
+	}
+
+
+	$$('td.comment').on('mousemove', 'a', function(e)
+	{
+		var
+			a = this
+			, pos = {
+				left: e.pageX+20
+				, top: e.pageY
+			}
+		;
+
+		if(!isImage(a.href))
+			return;
+
+		$imgDiv.putLoadingImage().show().css(pos);
+
+		getImg(a.href, function($img)
+		{
+			var img = $img.get(0);
+
+			if(img.naturalHeight > windowHeight)
+			{
+				$img.height(windowHeight - 10);
+				pos.top = $(window).scrollTop() + 5;
+			} else if(img.naturalHeight + e.clientY + 10 > windowHeight) {
+				var diff = img.naturalHeight + e.clientY + 5 - windowHeight;
+				pos.top = $(window).scrollTop() + e.clientY - diff;
+			}
+
+			$imgDiv.css(pos).html($img);
+		});
+	});
+
+
+	$$('td.comment').on('mouseleave', 'a', function()
+	{
+		$imgDiv.hide();
+	});
+};
+

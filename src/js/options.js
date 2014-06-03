@@ -27,6 +27,12 @@ var manifest = {
 						label: $getMessage('(click to zoom) Fit images in Spoilers'),
 						initial: false
 					}
+					,{
+						type: 'checkbox',
+						name: 'linkImagePreview',
+						label: $getMessage('(hover to view) Preview images under links'),
+						initial: true
+					}
 				]
 			}, {
 				"Censored Post": [
