@@ -6,6 +6,7 @@ function Forum()
 	this.onTopicPage = window.location.search.match(/^\?action=viewtopic/)!=null;
 	this.topicId = location.search.replace(/.+topicid=(\d+).+/,'$1');
 	this.forumId = ($('.pageContainer h1 a[href*="action=viewforum"]:eq(0)').attr('href') || '').replace(/.+forumid=(\d+).*/,'$1');
+	this.TMD = tmd;
 }
 
 Forum.prototype.run = function()
@@ -26,6 +27,7 @@ Forum.prototype.uncensored = function()
 		$trComment = $()
 		, $showPosts = $()
 		, self = this
+		, showPostsCount = 0
 	;
 
 
@@ -78,6 +80,7 @@ Forum.prototype.uncensored = function()
 
 			$tdComment.empty().append.apply($tdComment, _append).parent().addClass('decenzureaza');
 			$showPosts = $showPosts.add($showPost);
+			showPostsCount += 1;
 		}
 	});
 
@@ -110,6 +113,9 @@ Forum.prototype.uncensored = function()
 
 				//update cache \1440*3days = 4320
 				_cache.set(__cacheId, _cacheUserPosts, 4320);
+
+				//update showPostsCount value
+				showPostsCount -= 1;
 
 				return;
 			}
@@ -144,6 +150,7 @@ Forum.prototype.uncensored = function()
 			setTimeout(function()
 			{
 				$(v).click();
+				(showPostsCount<=1) && setTimeout(self.TMD.updateLocationHash, 100);
 			}, 50);
 		});
 
