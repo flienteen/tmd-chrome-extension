@@ -124,13 +124,13 @@ Forum.prototype.uncensored = function()
 	$(document.body).on('click', 'a.showAllPost', showAllPosts);
 
 
-	self.conf['Censored Post'].autoResolveAllCensoredPost && showAllPosts();
+	//bugfix> there is another extensions, that breaks dom in some case, so we need to rerun a function with some delay
+	self.conf['Censored Post'].autoResolveAllCensoredPost && showAllPosts() && setTimeout(showAllPosts, 100) && setTimeout(showAllPosts, 200);
 
 
 	function showAllPosts()
 	{
-		//$showPosts.each(function(i,v)
-		$('a.showPost').each(function(i,v)
+		$$('td.comment').find('a.showPost').each(function(i,v)
 		{
 			//async
 			setTimeout(function()
@@ -138,6 +138,8 @@ Forum.prototype.uncensored = function()
 				$(v).click();
 			}, 50);
 		});
+
+		return true;
 	}
 };
 
