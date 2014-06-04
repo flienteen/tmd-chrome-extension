@@ -274,6 +274,8 @@ TMD.prototype.getUser = function(cb)
 TMD.prototype.updateLocationHash = function(hash)
 {
 	hash = hash || location.hash;
+	if(hash==='#')
+		return;
 
 	//change to fake hash
 	location.hash = hash+'fake';
