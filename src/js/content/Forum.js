@@ -61,6 +61,14 @@ Forum.prototype.uncensored = function()
 				_append.push(_p,$showAllPost,']');
 			}
 
+			/**
+			 * append $showPost but hide it, this is needed to proper work with other extensions that breaks the dom
+			 */
+			if(!self.conf['Censored Post'].showUncensoreButton && (self.conf['Censored Post'].autoResolveAllCensoredPost || self.conf['Censored Post'].showUncensoreAllButton))
+			{
+				_append.push($showPost.hide());
+			}
+
 			if(isMOFCensored)
 			{
 				//clear avatar
