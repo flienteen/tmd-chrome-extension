@@ -265,3 +265,21 @@ TMD.prototype.getUser = function(cb)
 		cb && cb();
 	}
 };
+
+
+/**
+ * Update window location hash and scroll to it
+ * @param {String} hash
+ */
+TMD.prototype.updateLocationHash = function(hash)
+{
+	hash = hash || location.hash;
+
+	//change to fake hash
+	location.hash = hash+'fake';
+
+	//update to real hash
+	location.hash = hash;
+
+	l('TMD.updateLocationHash =>', hash);
+};
