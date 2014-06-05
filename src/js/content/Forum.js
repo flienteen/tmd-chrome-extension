@@ -323,6 +323,7 @@ Forum.prototype.imgZoom = function()
 	var
 		$imgDiv = $('<div></div>',{'class':'imgZoom'}).putLoadingImage().appendTo(document.body)
 		, windowHeight = $(window).height()
+		, windowWidth = $(window).width()
 		, $_img = $('<img />')
 		, _imgs = {}
 		, isImage = function(src)
@@ -330,12 +331,14 @@ Forum.prototype.imgZoom = function()
 			return /.+\.(jpg|gif|png|jpeg)$/.test(src);
 		}
 		, self = this
+		, border = 10
 	;
 
 	//update window height on window resize
 	$(window).resize(function()
 	{
 		windowHeight = $(window).height();
+		windowWidth = $(window).width();
 	});
 
 	//cache image
@@ -392,7 +395,7 @@ Forum.prototype.imgZoom = function()
 		var
 			a = this
 			, pos = {
-				left: e.pageX+20
+				left: e.pageX+border*2
 				, top: e.pageY
 			}
 		;
@@ -408,11 +411,16 @@ Forum.prototype.imgZoom = function()
 
 			if(img.naturalHeight > windowHeight)
 			{
-				$img.height(windowHeight - 10);
-				pos.top = $(window).scrollTop() + 5;
-			} else if(img.naturalHeight + e.clientY + 10 > windowHeight) {
-				var diff = img.naturalHeight + e.clientY + 5 - windowHeight;
+				$img.css('max-height', windowHeight - border);
+				pos.top = $(window).scrollTop() + border/2;
+			} else if(img.naturalHeight + e.clientY + border > windowHeight) {
+				var diff = img.naturalHeight + e.clientY + border/2 - windowHeight;
 				pos.top = $(window).scrollTop() + e.clientY - diff;
+			}
+
+			if(img.naturalWidth > windowWidth - pos.left)
+			{
+				$img.css('max-width', windowWidth - pos.left);
 			}
 
 			$imgDiv.css(pos).html($img);

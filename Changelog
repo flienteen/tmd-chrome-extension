@@ -2,6 +2,7 @@
 ---------------------------------------------
 bugfix: Forum-> Censored Posts -> auto resolve
 added: Forum-> Censored Posts -> keep scroll on active anchor
+bugfix: Forum-> `Hover Preview` resize if image width > window width
 
 
 
