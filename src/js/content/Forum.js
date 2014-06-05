@@ -375,6 +375,19 @@ Forum.prototype.imgZoom = function()
 			l('\t\t\t\t\t\t\tnow>', a.href);
 
 			return true;
+		} else
+		/**
+		 * imgur =>
+		 * 		http://imgur.com/X275NbC =
+		 * 		http://i.imgur.com/X275NbC.jpg
+		 */
+		if(/^http:\/\/imgur\.com\//.test(a.href))
+		{
+			l('Forum.imgZoom:guessLink => imgur:', a.href);
+			a.href = a.href.replace(/imgur.com/,'i.imgur.com') + '.jpg';
+			l('\t\t\t\t\t\t\tnow>', a.href);
+
+			return true;
 		}
 
 		return false;
