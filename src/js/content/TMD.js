@@ -268,20 +268,18 @@ TMD.prototype.getUser = function(cb)
 
 
 /**
- * Update window location hash and scroll to it
+ * Scroll to hash/anchor
  * @param {String} hash
  */
 TMD.prototype.updateLocationHash = function(hash)
 {
-	hash = hash || location.hash;
-	if(!hash || hash==='#')
+	hash = (hash || location.hash).replace(/^#(.*)/,'$1');
+	if(!hash)
 		return;
 
-	//change to fake hash
-	location.hash = hash+'fake';
+	var pos = $$('a[name="'+hash+'"]').offset().top || 0;
+	pos && $(window).scrollTop(pos);
 
-	//update to real hash
-	location.hash = hash;
 
-	l('TMD.updateLocationHash =>', hash);
+	l('TMD.updateLocationHash =>', hash, pos);
 };

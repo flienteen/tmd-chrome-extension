@@ -1,3 +1,8 @@
+0.1.3.5
+---------------------------------------------
+fixed: Forum-> Censored Posts -> keep scroll on active anchor
+
+
 0.1.3.4
 ---------------------------------------------
 added: Forum-> `Hover Preview` trying to guess direct link from Imgur.com
