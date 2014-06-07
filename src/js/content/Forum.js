@@ -120,7 +120,10 @@ Forum.prototype.uncensored = function()
 				return;
 			}
 
-			//todo: check if user has permission to access `userhistory_posts.php`
+			//break if user isn't logged in
+			if(!tmd.user.name)
+				return $td.text('You must be logged in');
+
 			$tmp.load("userhistory_posts.php?action=viewposts&id="+userID+"&page="+(pageNb++)+"  .pageContainer table:eq(0) table:eq(0)", function (d)
 			{
 				$(this).find('a[href*="&page=p"]').each(function(i,v)
