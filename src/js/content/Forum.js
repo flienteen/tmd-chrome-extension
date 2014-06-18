@@ -175,7 +175,7 @@ Forum.prototype.likeOwnPosts = function()
 		var
 			$table = $(this)
 			, postID = $table.prev().attr('name')
-			, userId = $table.find('a[href^="userdetails.php"]').attr('href').replace(/.+id=(\d+)/,'$1')
+			, userId = ($table.find('a[href^="userdetails.php"]').attr('href')+'').replace(/.+id=(\d+)/,'$1')
 		;
 
 		if(userId.toString() === tmd.user.id.toString())
