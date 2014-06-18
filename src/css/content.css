@@ -90,11 +90,11 @@ tr.expanded #detailsCategories span:hover {
 img.zoomedIn {
   cursor: -webkit-zoom-out;
 }
-#torrentTablePlus {
+.torrentTablePlus {
   background: rgba(180,233,172,0.3);
-  position: absolute;
+  position: relative;
 }
-#torrentTablePlus .torrentTablePlusTr:not(:empty) {
+.torrentTablePlus .torrentTablePlusTr:not(:empty) {
   position: absolute;
   white-space: nowrap;
   right: 0;
@@ -104,7 +104,7 @@ img.zoomedIn {
   background-color: #ece9d8;
   transition: all 0.3s;
 }
-#torrentTablePlus .torrentTablePlusTr [type="button"] {
+.torrentTablePlus .torrentTablePlusTr [type="button"] {
   -webkit-appearance: push-button;
   -webkit-user-select: none;
   white-space: pre;
@@ -116,18 +116,18 @@ img.zoomedIn {
   cursor: pointer;
   margin: 1px;
 }
-#torrentTablePlus .torrentTablePlusTr .massAddSearchButton {
+.torrentTablePlus .torrentTablePlusTr .massAddSearchButton {
   display: inline-block;
   margin-left: 2px;
 }
-#torrentTablePlus .torrentTablePlusTr .massAddSearchButton input[type="checkbox"] {
+.torrentTablePlus .torrentTablePlusTr .massAddSearchButton input[type="checkbox"] {
   margin: 0;
   vertical-align: -webkit-baseline-middle;
 }
-#torrentTablePlus .torrentTablePlusTr .massAddSearchButton input[type="button"] {
+.torrentTablePlus .torrentTablePlusTr .massAddSearchButton input[type="button"] {
   margin-right: 1px;
 }
-#torrentTablePlus .torrentTablePlusTr .expandableTorrents {
+.torrentTablePlus .torrentTablePlusTr .expandableTorrents {
   width: 24px;
 }
 .tadaAnimation:not(:hover) {

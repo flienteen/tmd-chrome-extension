@@ -28,7 +28,7 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 	$('<input>',{type:'button',value:'+','class':'expandableTorrents'}).appendTo(this.$trPlus.not(':eq(0)'));
 
 	//on expand button is clicked
-	$(document.body).on('click','#torrentTablePlus .torrentTablePlusTr .expandableTorrents', function()
+	$(document.body).on('click','.torrentTablePlus .torrentTablePlusTr .expandableTorrents', function()
 	{
 		var
 			$button = $(this)
@@ -133,7 +133,7 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 
 	$massAddSearchButton.appendTo(this.$trPlus.not(':eq(0)'));
 
-	$(document.body).on('click', '#torrentTablePlus .massAddSearchButton [type="button"]', function()
+	$(document.body).on('click', '.torrentTablePlus .massAddSearchButton [type="button"]', function()
 	{
 		var
 			$parent = $(this).closest('.torrentTablePlusTr').data('$tr')
@@ -144,7 +144,7 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 		win.focus();
 	});
 
-	$(document.body).on('change', '#torrentTablePlus .massAddSearchButton [type="checkbox"]', function()
+	$(document.body).on('change', '.torrentTablePlus .massAddSearchButton [type="checkbox"]', function()
 	{
 		var
 			$parent = $(this).closest('.torrentTablePlusTr').data('$tr')
@@ -170,7 +170,6 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 /**
  * Create a fixed table on left side of `torrents table`
  * ---
- * this.$tablePlus - reference for created table
  * this.$trPlus - reference for its rows, each row has .data('$tr') = reference for real $tr from `torrents table`
  */
 Browse.prototype.torrentTablePlus = function torrentTablePlus()
@@ -180,9 +179,10 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 
 	var
 		$torrentTable = $$('table.tableTorrents').length ? $$('table.tableTorrents') : $('.pageContainer > table td img[src*="arrowdown.gif"]').closest('table')
-		, $tablePlus = $('<div></div>',{id:'torrentTablePlus'}).hide()
+		, $tablePlus = $('<div></div>',{'class':'torrentTablePlus'})
 		, $trPlus = $('<div></div>',{'class':'torrentTablePlusTr'})
 		, _$trPlus = $()
+		, _$tablePlus = $()
 		, tablePlusCss = {
 			top: 0
 			, right: $torrentTable.offset().left + $torrentTable.width()
@@ -190,52 +190,41 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 	;
 
 	//fill _$trPlus array
-	$torrentTable.find('tr').each(function()
+	$torrentTable.find('tr').each(function(i,tr)
 	{
 		var
 			$a = $(this).find('a[href*="details.php?id="]').eq(0)
+			, tdSelector = i ? 'td.torrentCategImg' : 'td:eq(0)'
 			, id = $a.length ? parseInt($a.attr('href').replace(/.+php\?id=(\d+).*/,'$1'),10) : 0
+			, $_tr = $trPlus.clone().data({'$tr': $(this), torrentId:id})
+		;
+		_$tablePlus = _$tablePlus.add($tablePlus.clone().append($_tr).appendTo($(this).find(tdSelector)));
+
+		_$trPlus = _$trPlus.add($_tr);
+	});
+
+
+	_$trPlus.one('DOMSubtreeModified', function()
+	{
+		var
+			$trPlus = $(this)
+			, $tablePlus = $(this).parent()
 		;
 
-		_$trPlus = _$trPlus.add($trPlus.clone().data({'$tr': $(this), torrentId:id}) );
+		$.wait(100).then(function()
+		{
+			var
+				width = $tablePlus.width()
+				, height = $trPlus.data('$tr').height()
+			;
+
+			$tablePlus.css({left:-1*(width+1), top: -1*(height+0.5)});
+			$trPlus.css({ height: height+2 });
+		});
 	});
-
-	//fill $tablePlus, apply styles and append it to DOM
-	$tablePlus.append(_$trPlus).css(tablePlusCss).appendTo(document.body).show(200);
-
-	//update before showing
-	updateTrPlusPosition();
 
 	//cache
-	this.$tablePlus = $tablePlus;
 	this.$trPlus = _$trPlus;
-
-	//update $trPlus positions on $torrentTable DOMSubtreeModified
-	$torrentTable.on('DOMSubtreeModified', function()
-	{
-		[10, 400, 900].forEach(function(time)
-		{
-			$.wait(time).then(updateTrPlusPosition);
-		});
-	});
-
-	/**
-	 * update $trPlus positions
-	 */
-	var lastTimeUpdated = 0;
-	function updateTrPlusPosition()
-	{
-		if(new Date() - lastTimeUpdated < 400 )
-			return;
-
-		_$trPlus.each(function()
-		{
-			var $tr = $(this).data('$tr');
-			$(this).css({'height':$tr.height()-6, 'top':$tr.offset().top})
-		});
-
-		lastTimeUpdated = new Date();
-	}
 };
 
 
