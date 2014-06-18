@@ -28,14 +28,19 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 	$('<input>',{type:'button',value:'+','class':'expandableTorrents'}).appendTo(this.$trPlus.not(':eq(0)'));
 
 	//on expand button is clicked
-	$(document.body).on('click','.torrentTablePlus .torrentTablePlusTr .expandableTorrents', function()
+	ea['click.expandableTorrents'] || $(document.body).on('click','.torrentTablePlus .torrentTablePlusTr .expandableTorrents', function(e)
 	{
 		var
 			$button = $(this)
 			, $parent = $button.parent()
 			, $tr = $parent.data('$tr')
-			, torrentId = $parent.data('torrentId')
+			, torrentId = $parent.attr('torrentId')
 		;
+
+		if(!$tr || !$tr.length)
+		{
+			$tr = $parent.closest('tr');
+		}
 
 		if($tr.next().is('.expanded'))
 		{
@@ -84,9 +89,10 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 			}
 		}
 	});
+	ea['click.expandableTorrents']=1;
 
 	//thanks button
-	$(document.body).on('click', '.expanded form input[name="thank"]', function(e)
+	ea['click.input[name="thank"]'] || $(document.body).on('click', '.expanded form input[name="thank"]', function(e)
 	{
 		e.preventDefault();
 		e.stopPropagation();
@@ -116,6 +122,7 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 			})
 		;
 	});
+	ea['click.input[name="thank"]']=1;
 };
 
 
@@ -133,7 +140,7 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 
 	$massAddSearchButton.appendTo(this.$trPlus.not(':eq(0)'));
 
-	$(document.body).on('click', '.torrentTablePlus .massAddSearchButton [type="button"]', function()
+	ea['massAddSearchButton click [type="button"]'] || $(document.body).on('click', '.torrentTablePlus .massAddSearchButton [type="button"]', function()
 	{
 		var
 			$parent = $(this).closest('.torrentTablePlusTr').data('$tr')
@@ -143,8 +150,9 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 
 		win.focus();
 	});
+	ea['massAddSearchButton click [type="button"]'] = 1;
 
-	$(document.body).on('change', '.torrentTablePlus .massAddSearchButton [type="checkbox"]', function()
+	ea['massAddSearchButton change [type="checkbox"]'] || $(document.body).on('change', '.torrentTablePlus .massAddSearchButton [type="checkbox"]', function()
 	{
 		var
 			$parent = $(this).closest('.torrentTablePlusTr').data('$tr')
@@ -156,6 +164,7 @@ Browse.prototype.massAddSearchButton = function massAddSearchButton()
 		$link.toggle();
 		$titleSpan.toggle();
 	});
+	ea['massAddSearchButton change [type="checkbox"]'] = 1;
 
 	function getSelectionText()
 	{
@@ -178,16 +187,18 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 		return;
 
 	var
-		$torrentTable = $$('table.tableTorrents').length ? $$('table.tableTorrents') : $('.pageContainer > table td img[src*="arrowdown.gif"]').closest('table')
+		$torrentTable = $('table.tableTorrents').length ? $('table.tableTorrents') : $('.pageContainer table td img[src*="arrowdown.gif"]').closest('table')
 		, $tablePlus = $('<div></div>',{'class':'torrentTablePlus'})
 		, $trPlus = $('<div></div>',{'class':'torrentTablePlusTr'})
 		, _$trPlus = $()
 		, _$tablePlus = $()
-		, tablePlusCss = {
-			top: 0
-			, right: $torrentTable.offset().left + $torrentTable.width()
-		}
+		, self = this
 	;
+
+	//prevent from multiple bindings
+	if($torrentTable.hasClass('torrentTablePlusED'))
+		return;
+
 
 	//fill _$trPlus array
 	$torrentTable.find('tr').each(function(i,tr)
@@ -196,7 +207,7 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 			$a = $(this).find('a[href*="details.php?id="]').eq(0)
 			, tdSelector = i ? 'td.torrentCategImg' : 'td:eq(0)'
 			, id = $a.length ? parseInt($a.attr('href').replace(/.+php\?id=(\d+).*/,'$1'),10) : 0
-			, $_tr = $trPlus.clone().data({'$tr': $(this), torrentId:id})
+			, $_tr = $trPlus.clone().data({'$tr': $(this)}).attr('torrentId',id)
 		;
 		_$tablePlus = _$tablePlus.add($tablePlus.clone().append($_tr).appendTo($(this).find(tdSelector)));
 
@@ -225,6 +236,32 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 
 	//cache
 	this.$trPlus = _$trPlus;
+
+	//prevent from multiple bindings
+	$torrentTable.addClass('torrentTablePlusED');
+
+	//auto watch for new torrents table
+	if(self.documentBodyOnTorrentsUpdate)
+		return;
+
+	self.documentBodyOnTorrentsUpdate = true;
+	var lastTimeTorrentsUpdated = 0;
+	$(document.body).on("DOMNodeInserted", "#torrents", function()
+	{
+		if(new Date() - lastTimeTorrentsUpdated < 300 )
+			return;
+
+		lastTimeTorrentsUpdated = new Date();
+		$.wait(100).then(function()
+		{
+			if($('.pageContainer table td img[src*="arrowdown.gif"]').closest('table').hasClass('torrentTablePlusED'))
+				return;
+
+			var b = new Browse();
+			b.$trPlus = $();
+			b.run();
+		});
+	});
 };
 
 
@@ -240,7 +277,7 @@ Browse.prototype.downloadButton = function downloadButton()
 	var $a = $('<a></a>',{type:'button',text:'D','class':'downloadButton'});
 	this.$trPlus.not(':eq(0)').each(function()
 	{
-		$a.clone().attr('href', '/download.php?id='+$(this).data('torrentId')).appendTo($(this));
+		$a.clone().attr('href', '/download.php?id='+$(this).attr('torrentId')).appendTo($(this));
 	});
 };
 
@@ -257,12 +294,12 @@ Browse.prototype.thanksButton = function thanksButton()
 	$('<input>',{type:'button',value:'T','class':'thanksButton'}).appendTo(this.$trPlus.not(':eq(0)'));
 
 	//on thanks button is clicked
-	$(document.body).on('click','#torrentTablePlus .torrentTablePlusTr .thanksButton', function()
+	ea['thanksButton click .thanksButton'] || $(document.body).on('click','.torrentTablePlus .torrentTablePlusTr .thanksButton', function()
 	{
 		var
 			$button = $(this)
 			, $parent = $button.parent()
-			, torrentId = $parent.data('torrentId')
+			, torrentId = $parent.attr('torrentId')
 		;
 
 		//disable button once it was clicked
@@ -271,4 +308,5 @@ Browse.prototype.thanksButton = function thanksButton()
 		//send thanks request
 		$.post('./details.php', {id:torrentId, thank:1, async:1});
 	});
+	ea['thanksButton click .thanksButton'] = 1;
 };

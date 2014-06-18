@@ -9,6 +9,7 @@ var
 	config = store.namespace('config')
 	, _cache = store.namespace('_cache')
 	, tmd
+	, ea = {} //Event Attached
 
 	/**
 	 * Alias for console object
