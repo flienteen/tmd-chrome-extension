@@ -9,6 +9,10 @@ function TMD()
 
 TMD.prototype.run = function(cb)
 {
+	cb = [].concat(cb,
+		this.addBbImageUploader
+	);
+
 	this.updateConfig(cb);
 	this.fixSpoilers2();
 	//this.contextMenus();
@@ -283,3 +287,113 @@ TMD.prototype.updateLocationHash = function(hash)
 
 	l('TMD.updateLocationHash =>', hash, pos);
 };
+
+
+/**
+ * New BB Button, Image Uploader
+ */
+TMD.prototype.addBbImageUploader = function()
+{
+	try
+	{
+		if(!config('global').TMD.Features.imageUploaderBbButton)
+			return;
+	} catch (e) {
+		return;
+	}
+
+	insert();
+
+	function insert()
+	{
+		if(ea["addBbImageUploader"])
+			return;
+
+		var
+			$container = $('.markItUpContainer')
+			, $bar = $container.find('.markItUpHeader ul')
+			, $imgur = $('<li></li>',{'class':'markItUpButton imgur', html:'<input multiple type="file" />'})
+		;
+		ea["addBbImageUploader"] = $bar.length > 0;
+
+		$bar.append('<li class="markItUpSeparator"></li>', $imgur);
+	}
+
+	//dynamically insert bb button
+	$(document).on("DOMSubtreeModified", ".markItUpHeader", function()
+	{
+		if(ea["addBbImageUploader"])
+			return;
+
+		$.wait(100).then(insert);
+	});
+
+	//trigger file chooser dialog
+	$(document.body).on('click', '.markItUpButton.imgur', function()
+	{
+		$(this).find('input').get(0).click();
+	});
+
+	//on file changed //TODO: more verbose
+	$(document.body).on('change', '.markItUpButton.imgur input', function(e)
+	{
+		var
+			files = e.target.files
+			, file
+			, i
+			, len
+			, fd
+			, textArea = $(this).closest('.markItUpContainer').find('.markItUpEditor').get(0)
+		;
+
+		for (i = 0, len = files.length; i < len; i += 1)
+		{
+			file = files[i];
+			if (!file.type.match(/image.*/))
+				return;
+
+			fd = new FormData();
+			fd.append('image', file);
+
+			//uploading image
+			$.ajax(
+			{
+				url: 'https://api.imgur.com/3/image',
+				headers: {'Authorization': 'Client-ID bbf2f7b872dbae8'},
+				type: 'POST',
+				processData: false,
+				cache: false,
+				contentType: false,
+				data: fd,
+				complete: function(response)
+				{
+					response = JSON.parse(response.responseText);
+
+					if(response.success)
+					{
+						var
+							pos = textArea.selectionStart
+							, val = textArea.value
+						;
+						textArea.value = val.substr(0, pos) + response.data.link + val.substr(pos);
+
+					} else {
+						alert(response.data.error);
+					}
+				}
+			});
+
+		}
+	});
+};
+
+
+
+
+
+
+
+
+
+
+

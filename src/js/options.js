@@ -7,6 +7,18 @@ var manifest = {
 	settings:
 	[
 		{
+			"TMD": [{
+				"Features": [
+					{
+						type: 'checkbox',
+						name: 'imageUploaderBbButton',
+						label: $getMessage('Image Uploader BB Button'),
+						initial: true
+					}
+				]
+			}]
+		}
+		,{
 			"Forum": [{
 				"Action": [
 					{
