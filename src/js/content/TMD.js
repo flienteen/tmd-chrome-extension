@@ -3,7 +3,7 @@
 function TMD()
 {
 	this.user = {};
-	this.version = '0.1.3';
+	this.version = '0.1.4';
 	this.oldVersion = '';
 }
 
