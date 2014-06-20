@@ -311,7 +311,7 @@ TMD.prototype.addBbImageUploader = function()
 
 		var
 			$container = $('.markItUpContainer')
-			, $bar = $container.find('.markItUpHeader ul')
+			, $bar = $container.find('.markItUpHeader > ul')
 			, $imgur = $('<li></li>',{'class':'markItUpButton imgur', html:'<input multiple type="file" />'})
 		;
 		ea["addBbImageUploader"] = $bar.length > 0;
