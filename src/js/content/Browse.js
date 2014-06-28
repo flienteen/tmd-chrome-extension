@@ -228,10 +228,11 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 			var
 				width = $tablePlus.width()
 				, height = $trPlus.data('$tr').height()
+				, plusDiff = $trPlus.data('$tr').is(':last-child') ? -6 : 2.5
 			;
 
 			$tablePlus.css({left:-1*(width+1), top: -1*(height+0.5)});
-			$trPlus.css({ height: height+2 });
+			$trPlus.css({ height: height+plusDiff });
 
 			checkIfTableIsVisible($trPlus);
 		});
