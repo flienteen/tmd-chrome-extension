@@ -274,7 +274,7 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 			return;
 
 		_checkIfTableIsVisible = true;
-		if($tr.position().left>0)
+		if($tr.offset().left>0)
 			return;
 
 		var confirmed = confirm("Seems like the TorrentTablePlus is out of visible content, would you like to move it to torrent table?\n\n*Note: you can also disable/enable this features from the extensions settings.");
