@@ -148,6 +148,21 @@ img.zoomedIn {
 .torrentTablePlus .torrentTablePlusTr .expandableTorrents {
   width: 24px;
 }
+.inlinePlusTr .torrentTablePlus {
+  position: initial;
+}
+.inlinePlusTr .torrentTablePlus .torrentTablePlusTr:not(:empty) {
+  position: initial;
+  border-bottom: 0;
+  border-left: 0;
+  padding: 0;
+  height: 24px;
+/*display inline-table
+			white-space normal
+			vertical-align bottom
+			border 0
+			background transparent*/
+}
 .tadaAnimation:not(:hover) {
   -webkit-animation: tada linear 1s infinite;
 }

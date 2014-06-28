@@ -115,6 +115,12 @@ var manifest = {
 						label: $getMessage('Show thanks button'),
 						initial: true
 					}
+					,{
+						type: 'checkbox',
+						name: 'inlineTablePlus',
+						label: $getMessage('Move TorrentPlus into torrents table'),
+						initial: false
+					}
 				]
 			}]
 		}

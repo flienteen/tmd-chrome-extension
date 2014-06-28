@@ -215,7 +215,8 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 	});
 
 
-	_$trPlus.one('DOMSubtreeModified', function()
+	self.conf.Show.inlineTablePlus && makeTablePlusInline();
+	self.conf.Show.inlineTablePlus || _$trPlus.one('DOMSubtreeModified', function()
 	{
 		var
 			$trPlus = $(this)
@@ -231,6 +232,8 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 
 			$tablePlus.css({left:-1*(width+1), top: -1*(height+0.5)});
 			$trPlus.css({ height: height+2 });
+
+			checkIfTableIsVisible($trPlus);
 		});
 	});
 
@@ -262,6 +265,35 @@ Browse.prototype.torrentTablePlus = function torrentTablePlus()
 			b.run();
 		});
 	});
+
+	var _checkIfTableIsVisible;
+	function checkIfTableIsVisible($tr)
+	{
+		if(_checkIfTableIsVisible || localStorage.checkIfTableIsVisibleConfirmed)
+			return;
+
+		_checkIfTableIsVisible = true;
+		if($tr.position().left>0)
+			return;
+
+		var confirmed = confirm("Seems like the TorrentTablePlus is out of visible content, would you like to move it to torrent table?\n\n*Note: you can also disable/enable this features from the extensions settings.");
+		localStorage.checkIfTableIsVisibleConfirmed = true;
+
+		self.conf.Show.inlineTablePlus = confirmed;
+		chrome.storage.local.get('ConfigSettings', function(conf)
+		{
+			conf.ConfigSettings.settings.Browse.Show.inlineTablePlus=confirmed;
+			chrome.storage.local.set(conf)
+		});
+
+
+		confirmed && makeTablePlusInline();
+	}
+
+	function makeTablePlusInline()
+	{
+		$torrentTable.addClass('inlinePlusTr');
+	}
 };
 
 
