@@ -395,63 +395,44 @@ TMD.prototype.addBbImageUploader = function()
  */
 TMD.prototype.addBbImageUploaderStaticMd = function()
 {
-	/*try
-	{
-		if(!config('global').TMD.Features.imageUploaderBbButtonStaticMd)
+	try {
+		if (!config('global').TMD.Features.imageUploaderBbButtonStaticMd) {
 			return;
+		}
 	} catch (e) {
 		return;
-	}*/
-
-	insert();
-
-	function insert()
-	{
-		if(ea["addBbImageUploaderStaticMd"])
-			return;
-
-		var
-			$container = $('.markItUpContainer')
-			, $bar = $container.find('.markItUpHeader > ul')
-			, $static = $('<li></li>',{'class':'markItUpButton static-md', html:'<input multiple type="file" />'})
-			;
-		ea["addBbImageUploaderStaticMd"] = $bar.length > 0;
-
-		$bar.append('<li class="markItUpSeparator"></li>', $static);
 	}
 
-	//dynamically insert bb button
-	$(document).on("DOMSubtreeModified", ".markItUpHeader", function()
-	{
-		if(ea["addBbImageUploaderStaticMd"])
-			return;
+	var inst = {
+		pendingImages: [],
+		$button: null,
+		isBusy: false,
+		updateLoading: function() {
+			this.$button[ (this.isBusy || this.pendingImages.length) ? 'addClass' : 'removeClass' ]('loading');
+		},
+		log: function(text) {
+			console.log('[Static.md]', text);
+		},
+		uploadNext: function() {
+			this.updateLoading();
 
-		$.wait(100).then(insert);
-	});
+			console.log('');
 
-	//trigger file chooser dialog
-	$(document.body).on('click', '.markItUpButton.static-md', function() {
-		$(this).find('input').get(0).click();
-	});
+			if (this.isBusy || !this.pendingImages.length) {
+				this.log('No more images for upload.');
+				return false;
+			}
 
-	//on file changed //TODO: more verbose
-	$(document.body).on('change', '.markItUpButton.static-md input', function(e) {
-		var
-			files = e.target.files
-			, file
-			, i
-			, len
-			, fd
-			, textArea = $(this).closest('.markItUpContainer').find('.markItUpEditor').get(0)
-			;
+			this.log(this.pendingImages.length +' image'+ (this.pendingImages.length != 1 ? 's' : '') +' pending.');
+			console.log('');
 
-		for (i = 0, len = files.length; i < len; i += 1) {
-			file = files[i];
-			if (!file.type.match(/image.*/))
-				return;
+			var fd = new FormData();
+			fd.append('image', this.pendingImages.shift());
 
-			fd = new FormData();
-			fd.append('image', file);
+			this.isBusy = true;
+			this.updateLoading();
+
+			this.log('Requesting token...');
 
 			$.ajax({
 				url: 'http://static.md/api/v2/get-token/',
@@ -462,9 +443,22 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 				data: fd,
 				dataType: 'json',
 				complete: function(response) {
+					if (response.status != 200) {
+						inst.isBusy = false;
+						inst.uploadNext();
+						delete fd;
+
+						alert('Response status: '+ response.status);
+						return;
+					}
+
 					response = JSON.parse(response.responseText);
 
 					if (response.error.length) {
+						inst.isBusy = false;
+						inst.uploadNext();
+						delete fd;
+
 						alert(response.error);
 						return;
 					}
@@ -472,6 +466,8 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 					fd.append('token', response.token);
 
 					setTimeout(function(){
+						inst.log('Uploading...');
+
 						$.ajax({
 							url: 'http://static.md/api/v2/upload/',
 							type: 'POST',
@@ -481,21 +477,100 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 							data: fd,
 							dataType: 'json',
 							complete: function(response) {
+								if (response.status != 200) {
+									inst.isBusy = false;
+									inst.uploadNext();
+									delete fd;
+
+									alert('Response status: '+ response.status);
+									return;
+								}
+
 								response = JSON.parse(response.responseText);
 
 								if (response.error.length) {
+									inst.isBusy = false;
+									inst.uploadNext();
+									delete fd;
+
 									alert(response.error);
 									return;
 								}
 
-								var pos = textArea.selectionStart, val = textArea.value;
-								textArea.value = val.substr(0, pos) + response.image + val.substr(pos);
+								inst.log(response.image);
+
+								var textArea = inst.$button.closest('.markItUp').find('textarea').get(0)
+									, pos = textArea.selectionStart
+									, val = textArea.value;
+								textArea.value = val.substr(0, pos) + response.image + "\n" + val.substr(pos);
+
+								{
+									inst.isBusy = false;
+									inst.uploadNext();
+									delete fd;
+								}
 							}
 						});
 					}, response.token_valid_after_seconds * 1000);
+
+					inst.log('Waiting '+ response.token_valid_after_seconds +' seconds...');
 				}
 			});
+
+			return true;
 		}
+	};
+
+	insert();
+
+	function insert() {
+		if (ea["addBbImageUploaderStaticMd"]) {
+			return;
+		}
+
+		inst.pendingImages = []; // reset all pending images
+
+		var $bar = $('.markItUpContainer').find('.markItUpHeader > ul');
+
+		ea["addBbImageUploaderStaticMd"] = $bar.length > 0;
+
+		inst.$button = $('<li></li>', {'class': 'markItUpButton static-md', html: '<input multiple type="file" />'});
+
+		$bar.append('<li class="markItUpSeparator"></li>', inst.$button);
+	}
+
+	// dynamically insert bb button
+	$(document).on("DOMSubtreeModified", ".markItUpHeader", function() {
+		if (ea["addBbImageUploaderStaticMd"]) {
+			return;
+		}
+
+		$.wait(100).then(insert);
+	});
+
+	// trigger file chooser dialog
+	$(document.body).on('click', '.markItUpButton.static-md', function() {
+		$(this).find('input').get(0).click();
+	});
+
+	//on file changed
+	$(document.body).on('change', '.markItUpButton.static-md input', function(e) {
+		var
+			files = e.target.files
+			, i
+			, len
+			;
+
+		for (i = 0, len = files.length; i < len; ++i) {
+			if (!files[i].type.match(/image.*/)) {
+				console.warn('Invalid image type', files[i].type);
+				return;
+			}
+
+			inst.pendingImages.push(files[i]);
+		}
+
+		inst.uploadNext();
 	});
 };
 
