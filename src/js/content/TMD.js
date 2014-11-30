@@ -12,6 +12,9 @@ TMD.prototype.run = function(cb)
 	cb = [].concat(cb,
 		this.addBbImageUploader
 	);
+	cb = [].concat(cb,
+		this.addBbImageUploaderStaticMd
+	);
 
 	this.updateConfig(cb);
 	this.fixSpoilers2();
@@ -383,6 +386,115 @@ TMD.prototype.addBbImageUploader = function()
 				}
 			});
 
+		}
+	});
+};
+
+/**
+ * BB Button, Static.md Image Uploader
+ */
+TMD.prototype.addBbImageUploaderStaticMd = function()
+{
+	/*try
+	{
+		if(!config('global').TMD.Features.imageUploaderBbButtonStaticMd)
+			return;
+	} catch (e) {
+		return;
+	}*/
+
+	insert();
+
+	function insert()
+	{
+		if(ea["addBbImageUploaderStaticMd"])
+			return;
+
+		var
+			$container = $('.markItUpContainer')
+			, $bar = $container.find('.markItUpHeader > ul')
+			, $static = $('<li></li>',{'class':'markItUpButton static-md', html:'<input multiple type="file" />'})
+			;
+		ea["addBbImageUploaderStaticMd"] = $bar.length > 0;
+
+		$bar.append('<li class="markItUpSeparator"></li>', $static);
+	}
+
+	//dynamically insert bb button
+	$(document).on("DOMSubtreeModified", ".markItUpHeader", function()
+	{
+		if(ea["addBbImageUploaderStaticMd"])
+			return;
+
+		$.wait(100).then(insert);
+	});
+
+	//trigger file chooser dialog
+	$(document.body).on('click', '.markItUpButton.static-md', function() {
+		$(this).find('input').get(0).click();
+	});
+
+	//on file changed //TODO: more verbose
+	$(document.body).on('change', '.markItUpButton.static-md input', function(e) {
+		var
+			files = e.target.files
+			, file
+			, i
+			, len
+			, fd
+			, textArea = $(this).closest('.markItUpContainer').find('.markItUpEditor').get(0)
+			;
+
+		for (i = 0, len = files.length; i < len; i += 1) {
+			file = files[i];
+			if (!file.type.match(/image.*/))
+				return;
+
+			fd = new FormData();
+			fd.append('image', file);
+
+			$.ajax({
+				url: 'http://static.md/api/v2/get-token/',
+				type: 'POST',
+				processData: false,
+				cache: false,
+				contentType: false,
+				data: fd,
+				dataType: 'json',
+				complete: function(response) {
+					response = JSON.parse(response.responseText);
+
+					if (response.error.length) {
+						alert(response.error);
+						return;
+					}
+
+					fd.append('token', response.token);
+
+					setTimeout(function(){
+						$.ajax({
+							url: 'http://static.md/api/v2/upload/',
+							type: 'POST',
+							processData: false,
+							cache: false,
+							contentType: false,
+							data: fd,
+							dataType: 'json',
+							complete: function(response) {
+								response = JSON.parse(response.responseText);
+
+								if (response.error.length) {
+									alert(response.error);
+									return;
+								}
+
+								var pos = textArea.selectionStart, val = textArea.value;
+								textArea.value = val.substr(0, pos) + response.image + val.substr(pos);
+							}
+						});
+					}, response.token_valid_after_seconds * 1000);
+				}
+			});
 		}
 	});
 };
