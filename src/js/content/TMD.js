@@ -432,7 +432,7 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 			this.log('Requesting token...');
 
 			$.ajax({
-				url: 'http://static.md/api/v2/get-token/',
+				url: '//static.md/api/v2/get-token/',
 				type: 'POST',
 				processData: false,
 				cache: false,
@@ -467,7 +467,7 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 						inst.log('Uploading...');
 
 						$.ajax({
-							url: 'http://static.md/api/v2/upload/',
+							url: '//static.md/api/v2/upload/',
 							type: 'POST',
 							processData: false,
 							cache: false,
