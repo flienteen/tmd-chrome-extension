@@ -14,6 +14,12 @@ var manifest = {
 						name: 'imageUploaderBbButton',
 						label: $getMessage('Image Uploader BB Button'),
 						initial: true
+					},
+					{
+						type: 'checkbox',
+						name: 'imageUploaderBbButtonStaticMd',
+						label: $getMessage('Image Uploader BB Button Static.md'),
+						initial: true
 					}
 				]
 			}]

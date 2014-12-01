@@ -15,7 +15,7 @@
 		"storage"
 	],
 
-	"web_accessible_resources": ["options.html", "icons/icon19.png", "src/images/imgur.png"],
+	"web_accessible_resources": ["options.html", "icons/icon19.png", "src/images/imgur.png", "src/images/static.png"],
 
 	"options_page": "options.html",
 
