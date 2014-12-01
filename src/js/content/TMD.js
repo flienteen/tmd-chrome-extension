@@ -10,10 +10,7 @@ function TMD()
 TMD.prototype.run = function(cb)
 {
 	cb = [].concat(cb,
-		this.addBbImageUploader
-	);
-	cb = [].concat(cb,
-		this.addBbImageUploaderStaticMd
+		this.addBbImageUploader, this.addBbImageUploaderStaticMd
 	);
 
 	this.updateConfig(cb);
@@ -448,6 +445,7 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 						inst.uploadNext();
 						delete fd;
 
+						//todo: change `alerts` in something more user friendly
 						alert('Response status: '+ response.status);
 						return;
 					}

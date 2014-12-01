@@ -12,13 +12,13 @@ var manifest = {
 					{
 						type: 'checkbox',
 						name: 'imageUploaderBbButton',
-						label: $getMessage('Image Uploader BB Button'),
+						label: $getMessage('Image Uploader BB Button (Imgur.com)'),
 						initial: true
 					},
 					{
 						type: 'checkbox',
 						name: 'imageUploaderBbButtonStaticMd',
-						label: $getMessage('Image Uploader BB Button Static.md'),
+						label: $getMessage('Image Uploader BB Button (Static.md)'),
 						initial: true
 					}
 				]
