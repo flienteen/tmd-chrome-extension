@@ -1,3 +1,9 @@
+0.1.5
+---------------------------------------------
+added: TMD-> New BB Button, Image Uploader (Static.MD) [thanks to moldcraft]
+fixed: Works on `https` domain
+
+
 0.1.4.3
 ---------------------------------------------
 fixed: Browse-> TorrentPlus on smaller resolution

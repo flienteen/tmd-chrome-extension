@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extName__",
-	"version": "0.1.4.3",
+	"version": "0.1.5",
 	"description": "__MSG_extDescription__",
 	"icons":
 	{
@@ -22,7 +22,7 @@
 	 "content_scripts": [
 		 {
 			 "matches": [
-				 "http://*.torrentsmd.com/*", "http://*.torrentsmd.eu/*", "http://*.torrentsmd.me/*",
+				 "https://*.torrentsmd.com/*", "http://*.torrentsmd.com/*", "http://*.torrentsmd.eu/*", "http://*.torrentsmd.me/*",
 				 "http://*.torrentsmoldova.com/*", "http://*.torrentsmoldova.org/*", "http://*.torrentsmoldova.net/*"
 			 ],
 			 "css": ["src/css/content.css"],
