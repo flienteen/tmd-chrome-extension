@@ -401,11 +401,140 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 	}
 
 	var inst = {
-		pendingImages: [],
 		$button: null,
-		isBusy: false,
+		pendingImages: [],
+		/**
+		 * Also used to check if uploader is busy
+		 * @type {Blob|Boolean}
+		 */
+		currentlyUploadedImage: false,
+		/*
+		 * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+		 * Digest Algorithm, as defined in RFC 1321.
+		 * Copyright (C) Paul Johnston 1999 - 2000.
+		 * Updated by Greg Holt 2000 - 2001.
+		 * See http://pajhome.org.uk/site/legal.html for details.
+		 */
+		md5: function(){"use strict";function n(n){var r,t="";for(r=0;3>=r;r++)t+=h.charAt(n>>8*r+4&15)+h.charAt(n>>8*r&15);return t}function r(n){var r,t=(n.length+8>>6)+1,u=new Array(16*t);for(r=0;16*t>r;r++)u[r]=0;for(r=0;r<n.length;r++)u[r>>2]|=n.charCodeAt(r)<<r%4*8;return u[r>>2]|=128<<r%4*8,u[16*t-2]=8*n.length,u}function t(n,r){var t=(65535&n)+(65535&r),u=(n>>16)+(r>>16)+(t>>16);return u<<16|65535&t}function u(n,r){return n<<r|n>>>32-r}function e(n,r,e,c,f,o){return t(u(t(t(r,n),t(c,o)),f),e)}function c(n,r,t,u,c,f,o){return e(r&t|~r&u,n,r,c,f,o)}function f(n,r,t,u,c,f,o){return e(r&u|t&~u,n,r,c,f,o)}function o(n,r,t,u,c,f,o){return e(r^t^u,n,r,c,f,o)}function i(n,r,t,u,c,f,o){return e(t^(r|~u),n,r,c,f,o)}function a(u){var e,a,h,v,g,l=r(u),A=1732584193,d=-271733879,s=-1732584194,b=271733878;for(e=0;e<l.length;e+=16)a=A,h=d,v=s,g=b,A=c(A,d,s,b,l[e+0],7,-680876936),b=c(b,A,d,s,l[e+1],12,-389564586),s=c(s,b,A,d,l[e+2],17,606105819),d=c(d,s,b,A,l[e+3],22,-1044525330),A=c(A,d,s,b,l[e+4],7,-176418897),b=c(b,A,d,s,l[e+5],12,1200080426),s=c(s,b,A,d,l[e+6],17,-1473231341),d=c(d,s,b,A,l[e+7],22,-45705983),A=c(A,d,s,b,l[e+8],7,1770035416),b=c(b,A,d,s,l[e+9],12,-1958414417),s=c(s,b,A,d,l[e+10],17,-42063),d=c(d,s,b,A,l[e+11],22,-1990404162),A=c(A,d,s,b,l[e+12],7,1804603682),b=c(b,A,d,s,l[e+13],12,-40341101),s=c(s,b,A,d,l[e+14],17,-1502002290),d=c(d,s,b,A,l[e+15],22,1236535329),A=f(A,d,s,b,l[e+1],5,-165796510),b=f(b,A,d,s,l[e+6],9,-1069501632),s=f(s,b,A,d,l[e+11],14,643717713),d=f(d,s,b,A,l[e+0],20,-373897302),A=f(A,d,s,b,l[e+5],5,-701558691),b=f(b,A,d,s,l[e+10],9,38016083),s=f(s,b,A,d,l[e+15],14,-660478335),d=f(d,s,b,A,l[e+4],20,-405537848),A=f(A,d,s,b,l[e+9],5,568446438),b=f(b,A,d,s,l[e+14],9,-1019803690),s=f(s,b,A,d,l[e+3],14,-187363961),d=f(d,s,b,A,l[e+8],20,1163531501),A=f(A,d,s,b,l[e+13],5,-1444681467),b=f(b,A,d,s,l[e+2],9,-51403784),s=f(s,b,A,d,l[e+7],14,1735328473),d=f(d,s,b,A,l[e+12],20,-1926607734),A=o(A,d,s,b,l[e+5],4,-378558),b=o(b,A,d,s,l[e+8],11,-2022574463),s=o(s,b,A,d,l[e+11],16,1839030562),d=o(d,s,b,A,l[e+14],23,-35309556),A=o(A,d,s,b,l[e+1],4,-1530992060),b=o(b,A,d,s,l[e+4],11,1272893353),s=o(s,b,A,d,l[e+7],16,-155497632),d=o(d,s,b,A,l[e+10],23,-1094730640),A=o(A,d,s,b,l[e+13],4,681279174),b=o(b,A,d,s,l[e+0],11,-358537222),s=o(s,b,A,d,l[e+3],16,-722521979),d=o(d,s,b,A,l[e+6],23,76029189),A=o(A,d,s,b,l[e+9],4,-640364487),b=o(b,A,d,s,l[e+12],11,-421815835),s=o(s,b,A,d,l[e+15],16,530742520),d=o(d,s,b,A,l[e+2],23,-995338651),A=i(A,d,s,b,l[e+0],6,-198630844),b=i(b,A,d,s,l[e+7],10,1126891415),s=i(s,b,A,d,l[e+14],15,-1416354905),d=i(d,s,b,A,l[e+5],21,-57434055),A=i(A,d,s,b,l[e+12],6,1700485571),b=i(b,A,d,s,l[e+3],10,-1894986606),s=i(s,b,A,d,l[e+10],15,-1051523),d=i(d,s,b,A,l[e+1],21,-2054922799),A=i(A,d,s,b,l[e+8],6,1873313359),b=i(b,A,d,s,l[e+15],10,-30611744),s=i(s,b,A,d,l[e+6],15,-1560198380),d=i(d,s,b,A,l[e+13],21,1309151649),A=i(A,d,s,b,l[e+4],6,-145523070),b=i(b,A,d,s,l[e+11],10,-1120210379),s=i(s,b,A,d,l[e+2],15,718787259),d=i(d,s,b,A,l[e+9],21,-343485551),A=t(A,a),d=t(d,h),s=t(s,v),b=t(b,g);return n(A)+n(d)+n(s)+n(b)}var h="0123456789abcdef";return a}(),
+		requestToken: (function(){
+			var reader = new FileReader();
+
+			reader.onload = function () {
+				var md5 = inst.md5(reader.result);
+
+				$.ajax({
+					url: '//static.md/api/v2/get-token/',
+					type: 'POST',
+					processData: false,
+					cache: false,
+					contentType: false,
+					data: (function(){
+						var fd = new FormData;
+
+						fd.append('md5', md5);
+
+						return fd;
+					})(),
+					dataType: 'json',
+					complete: function(response) {
+						if (response.status != 200) {
+							inst.currentlyUploadedImage = false;
+							inst.uploadNext();
+
+							alert('Response status: '+ response.status);
+							return;
+						}
+
+						response = JSON.parse(response.responseText);
+
+						if (response.error.length) {
+							inst.currentlyUploadedImage = false;
+							inst.uploadNext();
+
+							alert(response.error);
+							return;
+						}
+
+						var token = response.token;
+
+						setTimeout(function(){
+							inst.upload(token);
+						}, response.token_valid_after_seconds * 1000);
+
+						inst.log('Waiting '+ response.token_valid_after_seconds +' seconds...');
+					}
+				});
+			};
+
+			reader.onerror = function () {
+				console.error('Failed to read the image contents');
+
+				inst.currentlyUploadedImage = false;
+				inst.uploadNext();
+			};
+
+			reader.onabort = function () {
+				console.log('Image read aborted');
+			};
+
+			return function() {
+				inst.log('Requesting token...');
+				reader.readAsBinaryString(inst.currentlyUploadedImage);
+			};
+		})(),
+		upload: function(token) {
+			inst.log('Uploading...');
+
+			$.ajax({
+				url: '//static.md/api/v2/upload/',
+				type: 'POST',
+				processData: false,
+				cache: false,
+				contentType: false,
+				data: (function(){
+					var fd = new FormData();
+
+					fd.append('token', token);
+					fd.append('image', inst.currentlyUploadedImage);
+
+					return fd;
+				})(),
+				dataType: 'json',
+				complete: function(response) {
+					if (response.status != 200) {
+						inst.currentlyUploadedImage = false;
+						inst.uploadNext();
+
+						alert('Response status: '+ response.status);
+						return;
+					}
+
+					response = JSON.parse(response.responseText);
+
+					if (response.error.length) {
+						inst.currentlyUploadedImage = false;
+						inst.uploadNext();
+
+						alert(response.error);
+						return;
+					}
+
+					inst.log(response.image);
+
+					var textArea = inst.$button.closest('.markItUp').find('textarea').get(0)
+						, pos = textArea.selectionStart
+						, val = textArea.value;
+					textArea.value = val.substr(0, pos) + response.image + "\n" + val.substr(pos);
+
+					{
+						inst.currentlyUploadedImage = false;
+						inst.uploadNext();
+					}
+				}
+			});
+		},
 		updateLoading: function() {
-			this.$button[ (this.isBusy || this.pendingImages.length) ? 'addClass' : 'removeClass' ]('loading');
+			this.$button[ (this.currentlyUploadedImage || this.pendingImages.length) ? 'addClass' : 'removeClass' ]('loading');
 		},
 		log: function(text) {
 			console.log('[Static.md]', text);
@@ -415,7 +544,7 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 
 			console.log('');
 
-			if (this.isBusy || !this.pendingImages.length) {
+			if (this.currentlyUploadedImage || !this.pendingImages.length) {
 				this.log('No more images for upload.');
 				return false;
 			}
@@ -423,97 +552,10 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 			this.log(this.pendingImages.length +' image'+ (this.pendingImages.length != 1 ? 's' : '') +' pending.');
 			console.log('');
 
-			var fd = new FormData();
-			fd.append('image', this.pendingImages.shift());
-
-			this.isBusy = true;
+			this.currentlyUploadedImage = this.pendingImages.shift();
 			this.updateLoading();
 
-			this.log('Requesting token...');
-
-			$.ajax({
-				url: '//static.md/api/v2/get-token/',
-				type: 'POST',
-				processData: false,
-				cache: false,
-				contentType: false,
-				data: fd,
-				dataType: 'json',
-				complete: function(response) {
-					if (response.status != 200) {
-						inst.isBusy = false;
-						inst.uploadNext();
-						delete fd;
-
-						//todo: change `alerts` in something more user friendly
-						alert('Response status: '+ response.status);
-						return;
-					}
-
-					response = JSON.parse(response.responseText);
-
-					if (response.error.length) {
-						inst.isBusy = false;
-						inst.uploadNext();
-						delete fd;
-
-						alert(response.error);
-						return;
-					}
-
-					fd.append('token', response.token);
-
-					setTimeout(function(){
-						inst.log('Uploading...');
-
-						$.ajax({
-							url: '//static.md/api/v2/upload/',
-							type: 'POST',
-							processData: false,
-							cache: false,
-							contentType: false,
-							data: fd,
-							dataType: 'json',
-							complete: function(response) {
-								if (response.status != 200) {
-									inst.isBusy = false;
-									inst.uploadNext();
-									delete fd;
-
-									alert('Response status: '+ response.status);
-									return;
-								}
-
-								response = JSON.parse(response.responseText);
-
-								if (response.error.length) {
-									inst.isBusy = false;
-									inst.uploadNext();
-									delete fd;
-
-									alert(response.error);
-									return;
-								}
-
-								inst.log(response.image);
-
-								var textArea = inst.$button.closest('.markItUp').find('textarea').get(0)
-									, pos = textArea.selectionStart
-									, val = textArea.value;
-								textArea.value = val.substr(0, pos) + response.image + "\n" + val.substr(pos);
-
-								{
-									inst.isBusy = false;
-									inst.uploadNext();
-									delete fd;
-								}
-							}
-						});
-					}, response.token_valid_after_seconds * 1000);
-
-					inst.log('Waiting '+ response.token_valid_after_seconds +' seconds...');
-				}
-			});
+			this.requestToken();
 
 			return true;
 		}
