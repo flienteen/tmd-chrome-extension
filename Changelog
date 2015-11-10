@@ -1,3 +1,9 @@
+0.1.5.3
+---------------------------------------------
+improved: static.md functionality [thanks to moldcraft]
+fixed: running on all domains, including https [thanks to XXN]
+
+
 0.1.5.1
 ---------------------------------------------
 fixed: static.md upload function on `https` domain
