@@ -22,8 +22,8 @@
 	 "content_scripts": [
 		 {
 			 "matches": [
-				 "https://*.torrentsmd.com/*", "http://*.torrentsmd.com/*", "http://*.torrentsmd.eu/*", "http://*.torrentsmd.me/*",
-				 "http://*.torrentsmoldova.com/*", "http://*.torrentsmoldova.org/*", "http://*.torrentsmoldova.net/*"
+				 "https://*.torrentsmd.com/*", "http://*.torrentsmd.com/*", "http://*.torrentsmd.eu/*", "https://*.torrentsmd.eu/*", "http://*.torrentsmd.me/*", "https://*.torrentsmd.me/*",
+				 "http://*.torrentsmoldova.com/*", "https://*.torrentsmoldova.com/*", "http://*.torrentsmoldova.org/*", "https://*.torrentsmoldova.org/*", "http://*.torrentsmoldova.net/*", "https://*.torrentsmoldova.net/*"
 			 ],
 			 "css": ["src/css/content.css"],
 			 "js": [
