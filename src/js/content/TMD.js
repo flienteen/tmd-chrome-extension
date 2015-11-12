@@ -5,12 +5,15 @@ function TMD()
 	this.user = {};
 	this.version = '0.1.5';
 	this.oldVersion = '';
+	this.onWatherPage = /^\/watcher\.php$/.test(window.location.pathname);
 }
 
 TMD.prototype.run = function(cb)
 {
 	cb = [].concat(cb,
-		this.addBbImageUploader, this.addBbImageUploaderStaticMd
+		this.addBbImageUploader,
+		this.addBbImageUploaderStaticMd,
+		this.addMarkAllAsReadButton
 	);
 
 	this.updateConfig(cb);
@@ -387,6 +390,7 @@ TMD.prototype.addBbImageUploader = function()
 	});
 };
 
+
 /**
  * BB Button, Static.md Image Uploader
  */
@@ -615,7 +619,60 @@ TMD.prototype.addBbImageUploaderStaticMd = function()
 };
 
 
+/**
+ * Add a new button on watcher.php to mark all
+ *  topics and torrents as read
+ */
+TMD.prototype.addMarkAllAsReadButton = function()
+{
+	"use strict";
+	const isFeatureEnabled = config('global') && config('global').TMD && config('global').TMD.Features && config('global').TMD.Features.showMarkAllAsRead;
+	if(!this.onWatherPage || !isFeatureEnabled) {
+		return;
+	}
 
+	l('addMarkAllAsReadButton');
+
+	const $container = $('.pageContainer > .fullWidth td:eq(0)');
+	const $markAllAsRead = $('<button></button>',{'class':'TMD_Features_showMarkAllAsRead', html:__('Mark all as read!')}).click(markAllAsRead);
+
+	$markAllAsRead.appendTo($container);
+
+
+	////
+	function markAllAsRead()
+	{
+		const button = this;
+		const $unreadPics = $('img[src*="unlockednew.gif"]');
+
+		button.disabled = true;
+		$unreadPics.closest('tr').find('a').each(triggerPageLoad);
+
+
+		////
+		function triggerPageLoad(index, aNode)
+		{
+			const url = aNode.href.replace(/page=.+/, 'page=last');
+			loadPage(url, index);
+		}
+
+		function loadPage(url, picIndex)
+		{
+			$unreadPics[picIndex].src = '/pic/loading2.gif';
+			$.get(url).complete(swapImgSrc);
+
+
+			////
+			function swapImgSrc(_, responseStatus)
+			{
+				const success = responseStatus === 'success';
+
+				$unreadPics[picIndex].src = `/pic/forum/unlocked${success?'':'new'}.gif`;
+				if(!success) button.disabled = false;
+			}
+		}
+	}
+};
 
 
 
