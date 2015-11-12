@@ -20,6 +20,12 @@ var manifest = {
 						name: 'imageUploaderBbButtonStaticMd',
 						label: $getMessage('Image Uploader BB Button (Static.md)'),
 						initial: true
+					},
+					{
+						type: 'checkbox',
+						name: 'showMarkAllAsRead',
+						label: $getMessage('Show "Mark all as read" button [on watcher page]'),
+						initial: true
 					}
 				]
 			}]
