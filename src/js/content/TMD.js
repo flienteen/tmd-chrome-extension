@@ -3,7 +3,7 @@
 function TMD()
 {
 	this.user = {};
-	this.version = '0.1.5';
+	this.version = '1.6.0';
 	this.oldVersion = '';
 	this.onWatherPage = /^\/watcher\.php$/.test(window.location.pathname);
 }
