@@ -1,6 +1,7 @@
 1.6.0
 ---------------------------------------------
 added: TMD-> Show "Mark all as read" button [on watcher page]
+fixed: treats torrent's moder page as a browse page
 
 
 0.1.5.3

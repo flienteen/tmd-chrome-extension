@@ -3,7 +3,7 @@
 function Browse()
 {
 	this.conf = config('global').Browse;
-	this.onBrowsePage = /^\/(browse|search|mytorrents|bookmarks)\.php$/.test(window.location.pathname);
+	this.onBrowsePage = /^\/(browse|search|mytorrents|bookmarks|moder_to_moderate)\.php$/.test(window.location.pathname);
 }
 
 Browse.prototype.run = function()
