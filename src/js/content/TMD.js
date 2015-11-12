@@ -71,7 +71,7 @@ TMD.prototype.updateConfig = function updateConfig(cbs)
 	{
 		[].concat(cbs).forEach(function(cb)
 		{
-			typeof cb === "function" && cb();
+			typeof cb === "function" && cb.call($this);
 		});
 	}
 };
