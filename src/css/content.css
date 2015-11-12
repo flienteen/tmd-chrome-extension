@@ -237,3 +237,22 @@ img.zoomedIn {
     -webkit-transform: rotate(360deg);
   }
 }
+.TMD_Features_showMarkAllAsRead {
+  float: right;
+  background-color: #f4e2aa;
+  border: 1px solid #979797;
+  font-family: tahoma;
+  height: 22px;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #000;
+}
+.TMD_Features_showMarkAllAsRead:hover {
+  color: #729bc9;
+  border-color: #729bc9;
+}
+.TMD_Features_showMarkAllAsRead[disabled] {
+  opacity: 0.9;
+  color: #999;
+}
