@@ -29,6 +29,30 @@
   margin: 0;
   padding: 0;
 }
+.markItUpContainer .markItUpButton.static-md {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/src/images/static.png");
+  background-repeat: no-repeat;
+}
+.markItUpContainer .markItUpButton.static-md:hover {
+  background-color: #d3cfb8;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+.markItUpContainer .markItUpButton.static-md.loading {
+  -webkit-animation-name: smdRotate;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+.markItUpContainer .markItUpButton.static-md input {
+  color: #f00;
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+}
 tr.expanded #detailsCategories span,
 tr.expanded #detailsCategories span:hover {
   border: 0;
@@ -170,43 +194,33 @@ img.zoomedIn {
   0% {
     -webkit-transform: rotate(0deg) scaleX(1) scaleY(1);
   }
-
   10% {
     -webkit-transform: rotate(-3deg) scaleX(0.8) scaleY(0.8);
   }
-
   20% {
     -webkit-transform: rotate(-3deg) scaleX(0.8) scaleY(0.8);
   }
-
   30% {
     -webkit-transform: rotate(3deg) scaleX(1.2) scaleY(1.2);
   }
-
   40% {
     -webkit-transform: rotate(-3deg) scaleX(1.2) scaleY(1.2);
   }
-
   50% {
     -webkit-transform: rotate(3deg) scaleX(1.2) scaleY(1.2);
   }
-
   60% {
     -webkit-transform: rotate(-3deg) scaleX(1.2) scaleY(1.2);
   }
-
   70% {
     -webkit-transform: rotate(3deg) scaleX(1.2) scaleY(1.2);
   }
-
   80% {
     -webkit-transform: rotate(-3deg) scaleX(1.2) scaleY(1.2);
   }
-
   90% {
     -webkit-transform: rotate(3deg) scaleX(1.2) scaleY(1.2);
   }
-
   100% {
     -webkit-transform: rotate(3deg) scaleX(1.2) scaleY(1.2);
   }
@@ -215,38 +229,11 @@ img.zoomedIn {
   position: absolute;
   display: none;
 }
-
-
-/* begin: static.md upload button */
-
-.markItUpContainer .markItUpButton.static-md {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  background-image: url("chrome-extension://__MSG_@@extension_id__/src/images/static.png");
-  background-repeat: no-repeat;
-}
-.markItUpContainer .markItUpButton.static-md:hover {
-  background-color: #d3cfb8;
-  -webkit-border-radius: 2px;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
-.markItUpContainer .markItUpButton.static-md.loading {
-  -webkit-animation-name: smdRotate;
-  -webkit-animation-duration:2s;
-  -webkit-animation-iteration-count:infinite;
-  -webkit-animation-timing-function:linear;
-}
-.markItUpContainer .markItUpButton.static-md input {
-  color: #f00;
-  visibility: hidden;
-  margin: 0;
-  padding: 0;
-}
-
 @-webkit-keyframes smdRotate {
-  from {-webkit-transform:rotate(0deg);}
-  to {  -webkit-transform:rotate(360deg);}
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
-
-/* end: static.md upload button */
