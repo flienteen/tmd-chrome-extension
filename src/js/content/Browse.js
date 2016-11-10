@@ -61,14 +61,14 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 
 			if(!__cache[link])
 			{
-				__cache[link] = torrentId ? '<pic src="/pic/loading2.gif" />' : 'Error[no_ID]';
+				__cache[link] = torrentId ? '<img src="/pic/loading2.gif" />' : 'Error[no_ID]';
 
 				if(!torrentId)
 				{
 					return _done();
 				}
 
-				var $_ = $('<div>').load(link+' .pageContainer > table[width="880"][border="1"][cellspacing="0"][cellpadding="5"]', function()
+				var $_ = $('<div>').load(link+' .pageContainer > table[width="990"][border="1"][cellspacing="0"][cellpadding="5"]', function()
 				{
 					__cache[link] = $_.html();
 					_done();
@@ -79,7 +79,7 @@ Browse.prototype.expandableTorrents = function expandableTorrents()
 			function _done()
 			{
 				$trExpanded.html('<td colspan="'+ $tr.find('td').length +'">'+__cache[link]+'</td>')
-					.find('>td>table').css('width','867px')
+					.find('>td>table').css('width','100%')
 					.find('tbody>tr>td:first-child').css({'background-color': 'rgb(216, 211, 180)', cursor: 'pointer'}).click(function()
 					{
 						$button.click();
